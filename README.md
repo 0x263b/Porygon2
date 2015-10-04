@@ -4,13 +4,7 @@ An IRC Bot written in Go
 
 ### Dependencies
 ```
-go get github.com/thoj/go-ircevent
-go get github.com/steveyen/gkvlite
-go get github.com/PuerkitoBio/goquery
-go get github.com/dustin/go-humanize
-go get github.com/kennygrant/sanitize
-go get gopkg.in/xmlpath.v2
-go get github.com/kennygrant/sanitize
+go get github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/PuerkitoBio/goquery github.com/dustin/go-humanize github.com/kennygrant/sanitize gopkg.in/xmlpath.v2 github.com/kennygrant/sanitize
 ```
 
 ### Example
@@ -18,18 +12,18 @@ go get github.com/kennygrant/sanitize
 package main
 
 import (
-	"porygon2"
-	_ "porygon2/commands/8ball"
-	_ "porygon2/commands/admin"
-	_ "porygon2/commands/choose"
-	_ "porygon2/commands/google"
-	_ "porygon2/commands/lastfm"
-	_ "porygon2/commands/opengraph"
-	_ "porygon2/commands/translate"
-	_ "porygon2/commands/urbandictionary"
-	_ "porygon2/commands/weather"
-	_ "porygon2/commands/wolfram"
-	_ "porygon2/commands/youtube"
+	"github.com/killwhitey/Porygon2"
+	_ "github.com/killwhitey/Porygon2/commands/8ball"
+	_ "github.com/killwhitey/Porygon2/commands/admin"
+	_ "github.com/killwhitey/Porygon2/commands/choose"
+	_ "github.com/killwhitey/Porygon2/commands/google"
+	_ "github.com/killwhitey/Porygon2/commands/lastfm"
+	_ "github.com/killwhitey/Porygon2/commands/opengraph"
+	_ "github.com/killwhitey/Porygon2/commands/translate"
+	_ "github.com/killwhitey/Porygon2/commands/urbandictionary"
+	_ "github.com/killwhitey/Porygon2/commands/weather"
+	_ "github.com/killwhitey/Porygon2/commands/wolfram"
+	_ "github.com/killwhitey/Porygon2/commands/youtube"
 )
 
 func main() {
