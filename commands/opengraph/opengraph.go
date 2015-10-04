@@ -3,10 +3,10 @@ package url
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/0x263b/Porygon2"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/dustin/go-humanize"
 	"github.com/kennygrant/sanitize"
-	"github.com/killwhitey/Porygon2"
 	"html"
 	"io"
 	"io/ioutil"

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/killwhitey/Porygon2"
+	"github.com/0x263b/Porygon2"
 	"io/ioutil"
 	"net/http"
 	"net/url"

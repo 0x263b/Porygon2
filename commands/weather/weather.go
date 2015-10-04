@@ -2,8 +2,8 @@ package weather
 
 import (
 	"fmt"
-	"github.com/killwhitey/Porygon2"
-	"github.com/killwhitey/Porygon2/web"
+	"github.com/0x263b/Porygon2"
+	"github.com/0x263b/Porygon2/web"
 	"net/url"
 )
 

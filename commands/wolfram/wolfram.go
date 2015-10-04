@@ -2,7 +2,7 @@ package wolfram
 
 import (
 	"fmt"
-	"github.com/killwhitey/Porygon2"
+	"github.com/0x263b/Porygon2"
 	"gopkg.in/xmlpath.v2"
 	"net/http"
 	"net/url"

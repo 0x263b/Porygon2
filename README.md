@@ -12,18 +12,18 @@ go get github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/Puerki
 package main
 
 import (
-	"github.com/killwhitey/Porygon2"
-	_ "github.com/killwhitey/Porygon2/commands/8ball"
-	_ "github.com/killwhitey/Porygon2/commands/admin"
-	_ "github.com/killwhitey/Porygon2/commands/choose"
-	_ "github.com/killwhitey/Porygon2/commands/google"
-	_ "github.com/killwhitey/Porygon2/commands/lastfm"
-	_ "github.com/killwhitey/Porygon2/commands/opengraph"
-	_ "github.com/killwhitey/Porygon2/commands/translate"
-	_ "github.com/killwhitey/Porygon2/commands/urbandictionary"
-	_ "github.com/killwhitey/Porygon2/commands/weather"
-	_ "github.com/killwhitey/Porygon2/commands/wolfram"
-	_ "github.com/killwhitey/Porygon2/commands/youtube"
+	"github.com/0x263b/Porygon2"
+	_ "github.com/0x263b/Porygon2/commands/8ball"
+	_ "github.com/0x263b/Porygon2/commands/admin"
+	_ "github.com/0x263b/Porygon2/commands/choose"
+	_ "github.com/0x263b/Porygon2/commands/google"
+	_ "github.com/0x263b/Porygon2/commands/lastfm"
+	_ "github.com/0x263b/Porygon2/commands/opengraph"
+	_ "github.com/0x263b/Porygon2/commands/translate"
+	_ "github.com/0x263b/Porygon2/commands/urbandictionary"
+	_ "github.com/0x263b/Porygon2/commands/weather"
+	_ "github.com/0x263b/Porygon2/commands/wolfram"
+	_ "github.com/0x263b/Porygon2/commands/youtube"
 )
 
 func main() {
