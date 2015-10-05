@@ -1,4 +1,4 @@
-# Porygon2 ![](https://i.imgur.com/hXXgbIL.png)
+# Porygon2
 
 An IRC Bot written in Go
 
@@ -48,6 +48,8 @@ func newConfig() *bot.Config {
 ```
 
 #### Ubuntu service
+
+Save as `/etc/init/porygon2.conf` and run `service porygon2 start`
 
 ```
 # Upstart Configuration

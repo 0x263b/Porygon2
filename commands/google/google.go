@@ -51,7 +51,10 @@ func google(command *bot.Cmd, matches []string) (msg string, err error) {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	output := fmt.Sprintf("Google | %s | %s", sanitize.HTML(results.Responsedata.Results[0].Title), results.Responsedata.Results[0].URL)
+	title := sanitize.HTML(results.Responsedata.Results[0].Title)
+	link, _ := url.QueryUnescape(results.Responsedata.Results[0].URL)
+
+	output := fmt.Sprintf("Google | %s | %s", title, link)
 	return output, nil
 }
 
