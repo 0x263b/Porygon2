@@ -47,6 +47,25 @@ func newConfig() *bot.Config {
 }
 ```
 
+#### Ubuntu service
+
+```
+# Upstart Configuration
+
+description     "Porygon2"
+author          "Black Smiling Face"
+
+start on (net-device-up
+          and local-filesystems
+          and runlevel [2345])
+
+stop on runlevel [016]
+
+respawn
+
+exec /path/to/porygon2
+```
+
 ### Functions
 
 * [Google](#google)
