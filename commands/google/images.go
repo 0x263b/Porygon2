@@ -57,7 +57,9 @@ func image(command *bot.Cmd, matches []string) (msg string, err error) {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	output := fmt.Sprintf("Google | %s | %s", matches[1], results.Responsedata.Results[0].URL)
+	link, _ := url.QueryUnescape(results.Responsedata.Results[0].URL)
+
+	output := fmt.Sprintf("Google | %s | %s", matches[1], link)
 	return output, nil
 }
 
