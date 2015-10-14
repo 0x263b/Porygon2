@@ -1,14 +1,10 @@
 package tvmaze
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/0x263b/Porygon2"
 	"github.com/0x263b/Porygon2/web"
-	"io/ioutil"
-	"net/http"
 	"net/url"
-	"os"
 )
 
 const (
@@ -96,7 +92,7 @@ func tvmaze(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	if len(results.Links.Nextepisode.Href) != 0 {
-		next := &Nextepisode
+		next := &Nextepisode{}
 		err = web.GetJSON(results.Links.Nextepisode.Href, next)
 		if err != nil {
 			return "TVmaze | Could not find show", nil
