@@ -35,10 +35,16 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	output := fmt.Sprintf(
-		"Weather | %s | %s %s°%s. Wind chill: %s°%s. Humidity: %s%%",
+		"Weather | %s | %s %s°%s. %s: %s %s°%s/%s°%s. Wind chill: %s°%s. Humidity: %s%%",
 		data.Query.Results.Channel.Location.City,
 		data.Query.Results.Channel.Item.Condition.Text,
 		data.Query.Results.Channel.Item.Condition.Temp,
+		data.Query.Results.Channel.Units.Temperature,
+		data.Query.Results.Channel.Item.Forecast[0].Day,
+		data.Query.Results.Channel.Item.Forecast[0].Text,
+		data.Query.Results.Channel.Item.Forecast[0].High,
+		data.Query.Results.Channel.Units.Temperature,
+		data.Query.Results.Channel.Item.Forecast[0].Low,
 		data.Query.Results.Channel.Units.Temperature,
 		data.Query.Results.Channel.Wind.Chill,
 		data.Query.Results.Channel.Units.Temperature,
