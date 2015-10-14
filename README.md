@@ -2,9 +2,13 @@
 
 An IRC Bot written in Go
 
-### Dependencies
+### Install
 ```
+# Dependencies
 go get github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/PuerkitoBio/goquery github.com/dustin/go-humanize github.com/kennygrant/sanitize gopkg.in/xmlpath.v2 github.com/kennygrant/sanitize
+
+# Porygon2
+go get github.com/0x263b/Porygon2
 ```
 
 ### Example
@@ -85,14 +89,17 @@ exec /path/to/porygon2
 ***
 
 ### Google
-Gets the first result from [Google](https://encrypted.google.com/) for *search query*
+Gets the first result from [Google](https://www.google.com/)/[Google Images](https://images.google.com/) for *search query*
 
 **-g/-google** *search query*
 
 	-google Richard Stallman
 	Google | Richard Stallman's Personal Page | http://stallman.org/
-	Google | Richard Stallman - Wikipedia, the free encyclopedia | http://en.wikipedia.org/wiki/Richard_Stallman
-	Google | More results http://mnn.im/ukioc | Images: http://mnn.im/u7w1r
+
+**-img** *search query*
+
+	-img Richard Stallman
+	Google | Richard Stallman | https://upload.wikimedia.org/wikipedia/commons/7/7b/Richard_Stallman_-_F%C3%AAte_de_l'Humanit%C3%A9_2014_-_010.jpg
 
 
 ### WolframAlpha
@@ -101,7 +108,7 @@ Finds the answer of *question* using [WolfarmAlpha](http://www.wolframalpha.com/
 **-wa** *question*
 
 	-wa time in Bosnia
-	Wolfram | current time in Bosnia and Herzegovina => 8:41:47 pm CEST | Monday, October 7, 2013 | More info: http://mnn.im/ui6e7
+	Wolfram | current time in Bosnia and Herzegovina >>> 12:55:38 pm CEST | Tuesday, October 6, 2015
 
 
 ### Youtube
@@ -110,7 +117,7 @@ Gets the first result from [Youtube](https://www.youtube.com) for *search query*
 **-yt/-youtube** *search query*
 
 	-yt Richard Stallman interject
-	YouTube | I'd just like to interject... | 03:00 | 37,079 views | 269/5 | http://youtu.be/QlD9UBTcSW4 | More results: http://mnn.im/ubrov
+	YouTube | I'd just like to interject... | 3m1s | https://youtu.be/QlD9UBTcSW4
 
 
 ### Last.fm
@@ -193,7 +200,7 @@ Gets the first definition of *query* at [UrbanDictionary](http://www.urbandictio
 **-u/-ur/-urban** *query*
 
 	-urban 4chan
-	UrbanDictionary 4chan: you have just entered the very heart, soul, and life force of the internet. this is a place beyond sanity, wild and untamed. there is nothing new here. "new" content on 4chan is not found; it is created from old material. every interesting, offensive, shoc…
+	Urban Dictionary | 4chan | http://mnn.im/upucr | you have just entered the very heart, soul, and life force of the internet. this is a place beyond sanity, wild and untamed. there is nothing new here. "new" content on 4chan is not found; it is created from old material. every interesting, offensive, shoc…
 
 
 Gets the *n*th definition for *query* (only works for definitions 1-7)
