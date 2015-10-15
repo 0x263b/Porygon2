@@ -112,6 +112,14 @@ func tvmaze(command *bot.Cmd, matches []string) (msg string, err error) {
 		return output, nil
 	}
 
+	if len(results.Schedule.Days) == 0 {
+		output := fmt.Sprintf("TVmaze | %s | Status: %s",
+			results.Name,
+			results.Status,
+		)
+		return output, nil
+	}
+
 	output := fmt.Sprintf("TVmaze | %s | Airtime: %s %s on %s | Status: %s",
 		results.Name,
 		results.Schedule.Days[0],
