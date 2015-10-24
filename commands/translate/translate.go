@@ -31,8 +31,8 @@ type String struct {
 func auth() string {
 	parameters := url.Values{}
 	parameters.Add("grant_type", "client_credentials")
-	parameters.Add("client_id", bot.API.TranslateClient)
-	parameters.Add("client_secret", bot.API.TranslateSecret)
+	parameters.Add("client_id", bot.Config.API.TranslateClient)
+	parameters.Add("client_secret", bot.Config.API.TranslateSecret)
 	parameters.Add("scope", "http://api.microsofttranslator.com")
 
 	client := &http.Client{}

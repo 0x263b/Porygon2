@@ -13,7 +13,7 @@ func parse(s string, channel string, nick string) *Cmd {
 	c := &Cmd{Raw: s}
 	s = strings.TrimSpace(s)
 
-	if !strings.HasPrefix(s, config.Prefix) {
+	if !strings.HasPrefix(s, Config.Prefix) {
 		return nil
 	}
 
@@ -21,7 +21,7 @@ func parse(s string, channel string, nick string) *Cmd {
 	c.Nick = strings.TrimSpace(nick)
 
 	// Trim the prefix and extra spaces
-	c.Message = strings.TrimPrefix(s, config.Prefix)
+	c.Message = strings.TrimPrefix(s, Config.Prefix)
 	c.Message = strings.TrimSpace(c.Message)
 
 	// check if we have the command and not only the prefix

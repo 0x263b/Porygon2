@@ -22,7 +22,7 @@ func whosPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 		username := checkLastfm(user)
 
 		data := &NowPlaying{}
-		err = web.GetJSON(fmt.Sprintf(NowPlayingURL, username, bot.API.Lastfm), data)
+		err = web.GetJSON(fmt.Sprintf(NowPlayingURL, username, bot.Config.API.Lastfm), data)
 		if err != nil || data.Error > 0 {
 			continue
 		}
@@ -37,7 +37,7 @@ func whosPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 		var fmttags string
 		if len(data.Recenttracks.Track[0].Artist.Mbid) > 10 {
 			tags := &ArtistTags{}
-			err = web.GetJSON(fmt.Sprintf(ArtistTagsURL, data.Recenttracks.Track[0].Artist.Mbid, bot.API.Lastfm), tags)
+			err = web.GetJSON(fmt.Sprintf(ArtistTagsURL, data.Recenttracks.Track[0].Artist.Mbid, bot.Config.API.Lastfm), tags)
 			if err != nil {
 				continue
 			}

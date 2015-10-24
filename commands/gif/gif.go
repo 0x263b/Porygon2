@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	giphyURL = "https://api.giphy.com/v1/gifs/search?q=%s&api_key=dc6zaTOxFJmzC&limit=50"
+	giphyURL = "https://api.giphy.com/v1/gifs/search?q=%s&api_key=%s&limit=50"
 )
 
 type giphy struct {
@@ -77,7 +77,7 @@ type giphy struct {
 
 func gif(command *bot.Cmd, matches []string) (msg string, err error) {
 	data := &giphy{}
-	err = web.GetJSON(fmt.Sprintf(giphyURL, url.QueryEscape(matches[1])), data)
+	err = web.GetJSON(fmt.Sprintf(giphyURL, url.QueryEscape(matches[1]), bot.Config.API.Giphy), data)
 	if err != nil {
 		return "", err
 	}

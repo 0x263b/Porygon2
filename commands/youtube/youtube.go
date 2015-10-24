@@ -154,7 +154,7 @@ func ParseInt64(value string) int64 {
 
 func youtube(command *bot.Cmd, matches []string) (msg string, err error) {
 	search := &youtubeSearch{}
-	err = web.GetJSON(fmt.Sprintf(youtubeSearchURL, url.QueryEscape(matches[1]), bot.API.Youtube), search)
+	err = web.GetJSON(fmt.Sprintf(youtubeSearchURL, url.QueryEscape(matches[1]), bot.Config.API.Youtube), search)
 	if err != nil {
 		return fmt.Sprintf("YouTube | Could not find video for: %s", matches[1]), nil
 	}
@@ -166,7 +166,7 @@ func youtube(command *bot.Cmd, matches []string) (msg string, err error) {
 	id := search.Items[0].ID.Videoid
 
 	video := &youtubeVideo{}
-	err = web.GetJSON(fmt.Sprintf(youtubeVideoURL, id, bot.API.Youtube), video)
+	err = web.GetJSON(fmt.Sprintf(youtubeVideoURL, id, bot.Config.API.Youtube), video)
 	if err != nil {
 		return fmt.Sprintf("YouTube | Could not find video for: %s", matches[1]), nil
 	}

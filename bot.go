@@ -15,8 +15,8 @@ import (
 	"time"
 )
 
-// Config must contain the necessary data to connect to an IRC server
-type Config struct {
+// Configure must contain the necessary data to connect to an IRC server
+type Configure struct {
 	Server        string // IRC server:port. Ex: irc.rizon.net:6697
 	Channel       string // Initial channel to connect. Ex: "#channel"
 	User          string // The IRC username the bot will use
@@ -51,7 +51,7 @@ type ircConnection interface {
 
 var (
 	Conn         *irc.Connection
-	config       *Config
+	Config       *Configure
 	ChannelNicks = make(map[string][]string)
 )
 
@@ -90,34 +90,34 @@ func onPRIVMSG(e *irc.Event) {
 }
 
 func getServerName() string {
-	separatorIndex := strings.LastIndex(config.Server, ":")
+	separatorIndex := strings.LastIndex(Config.Server, ":")
 	if separatorIndex != -1 {
-		return config.Server[:separatorIndex]
+		return Config.Server[:separatorIndex]
 	} else {
-		return config.Server
+		return Config.Server
 	}
 }
 
 func connect() {
-	Conn = irc.IRC(config.User, config.Nick)
-	Conn.Password = config.Password
-	Conn.UseTLS = config.UseTLS
+	Conn = irc.IRC(Config.User, Config.Nick)
+	Conn.Password = Config.Password
+	Conn.UseTLS = Config.UseTLS
 	Conn.TLSConfig = &tls.Config{
 		ServerName:         getServerName(),
 		InsecureSkipVerify: true,
 	}
-	Conn.VerboseCallbackHandler = config.Debug
-	err := Conn.Connect(config.Server)
+	Conn.VerboseCallbackHandler = Config.Debug
+	err := Conn.Connect(Config.Server)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func onEndOfMotd(e *irc.Event) {
-	SetUserKey(config.Owner, "admin", "true")
-	Conn.Privmsg("nickserv", "identify "+config.Nickserv)
-	Conn.Mode(config.Nick, config.Modes)
-	SetChannelKey(config.Channel, "auto_join", true)
+	SetUserKey(Config.Owner, "admin", "true")
+	Conn.Privmsg("nickserv", "identify "+Config.Nickserv)
+	Conn.Mode(Config.Nick, Config.Modes)
+	SetChannelKey(Config.Channel, "auto_join", true)
 	Channels.VisitItemsAscend([]byte(""), true, func(i *gkvlite.Item) bool {
 		if GetChannelKey(string(i.Key), "auto_join") {
 			time.Sleep(2 * time.Second)
@@ -152,13 +152,13 @@ func onEndOfNames(e *irc.Event) {
 }
 
 func onKick(e *irc.Event) {
-	if e.Arguments[1] == config.Nick {
+	if e.Arguments[1] == Config.Nick {
 		time.Sleep(2 * time.Second)
 		Conn.Join(e.Arguments[0])
 	}
 }
 
-func configureEvents() {
+func ConfigureEvents() {
 	Conn.AddCallback("376", onEndOfMotd)
 	Conn.AddCallback("366", onEndOfNames)
 	Conn.AddCallback("353", onNames)
@@ -168,12 +168,12 @@ func configureEvents() {
 }
 
 // Run reads the Config, connect to the specified IRC server and starts the bot.
-// The bot will automatically join all the channels specified in the configuration
-func Run(c *Config) {
+// The bot will automatically join all the channels specified in the Configuration
+func Run(c *Configure) {
 	initkv()
-	config = c
+	Config = c
 	connect()
-	configureEvents()
+	ConfigureEvents()
 	Conn.Loop()
 }
 

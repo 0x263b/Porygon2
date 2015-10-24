@@ -23,7 +23,7 @@ func charts(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	data := &WeeklyCharts{}
-	err = web.GetJSON(fmt.Sprintf(ChartsURL, username, bot.API.Lastfm), data)
+	err = web.GetJSON(fmt.Sprintf(ChartsURL, username, bot.Config.API.Lastfm), data)
 	if err != nil || data.Error > 0 {
 		return fmt.Sprintf("Could not get charts for %s", username), nil
 	}
