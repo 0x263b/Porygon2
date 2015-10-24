@@ -24,6 +24,7 @@ import (
 	_ "github.com/0x263b/Porygon2/commands/lastfm"
 	_ "github.com/0x263b/Porygon2/commands/opengraph"
 	_ "github.com/0x263b/Porygon2/commands/translate"
+	_ "github.com/0x263b/Porygon2/commands/twitter"
 	_ "github.com/0x263b/Porygon2/commands/urbandictionary"
 	_ "github.com/0x263b/Porygon2/commands/weather"
 	_ "github.com/0x263b/Porygon2/commands/wolfram"
@@ -48,13 +49,15 @@ func newConfig() *bot.Configure {
 		Prefix:   "!",                  // "!"
 		Owner:    "joe",                // your nick
 		API: bot.API{
-			Lastfm:          "",
-			Giphy:           "",
-			TranslateClient: "",
-			TranslateSecret: "",
-			Weather:         "",
-			Wolfram:         "",
-			Youtube:         "",
+			Lastfm:                "",
+			Giphy:                 "",
+			TranslateClient:       "",
+			TranslateSecret:       "",
+			TwitterConsumerKey:    "",
+			TwitterConsumerSecret: "",
+			Weather:               "",
+			Wolfram:               "",
+			Youtube:               "",
 		},
 	}
 }
