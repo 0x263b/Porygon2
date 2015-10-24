@@ -12,8 +12,8 @@ import (
 
 func LoadCredentials() (client *twittergo.Client, err error) {
 	config := &oauth1a.ClientConfig{
-		ConsumerKey:    bot.Config.Api.TwitterConsumerKey,
-		ConsumerSecret: bot.Config.Api.TwitterConsumerSecret,
+		ConsumerKey:    bot.Config.API.TwitterConsumerKey,
+		ConsumerSecret: bot.Config.API.TwitterConsumerSecret,
 	}
 	client = twittergo.NewClient(config, nil)
 	return
@@ -21,7 +21,6 @@ func LoadCredentials() (client *twittergo.Client, err error) {
 
 func twitter(command *bot.Cmd, matches []string) (msg string, err error) {
 	var (
-		err     error
 		client  *twittergo.Client
 		query   url.Values
 		req     *http.Request
@@ -36,7 +35,8 @@ func twitter(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	query = url.Values{}
 	query.Set("count", "1")
-	query.Set("screen_name", screenName)
+	query.Set("exclude_replies", "true")
+	query.Set("screen_name", matches[1])
 
 	endpoint := fmt.Sprintf("/1.1/statuses/user_timeline.json?%v", query.Encode())
 
