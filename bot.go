@@ -39,7 +39,7 @@ type ircConnection interface {
 }
 
 var (
-	irccon       *irc.Connection
+	Conn         *irc.Connection
 	config       *Config
 	ChannelNicks = make(map[string][]string)
 )
@@ -71,11 +71,11 @@ func logChannel(channel, text, senderNick string) {
 }
 
 func onPRIVMSG(e *irc.Event) {
-	if e.Arguments[0] != irccon.GetNick() {
+	if e.Arguments[0] != Conn.GetNick() {
 		channel := strings.Replace(e.Arguments[0], "#", "", -1)
 		logChannel(channel, e.Message(), e.Nick)
 	}
-	messageReceived(e.Arguments[0], e.Message(), e.Nick, irccon)
+	messageReceived(e.Arguments[0], e.Message(), e.Nick, Conn)
 }
 
 func getServerName() string {
@@ -88,15 +88,15 @@ func getServerName() string {
 }
 
 func connect() {
-	irccon = irc.IRC(config.User, config.Nick)
-	irccon.Password = config.Password
-	irccon.UseTLS = config.UseTLS
-	irccon.TLSConfig = &tls.Config{
+	Conn = irc.IRC(config.User, config.Nick)
+	Conn.Password = config.Password
+	Conn.UseTLS = config.UseTLS
+	Conn.TLSConfig = &tls.Config{
 		ServerName:         getServerName(),
 		InsecureSkipVerify: true,
 	}
-	irccon.VerboseCallbackHandler = config.Debug
-	err := irccon.Connect(config.Server)
+	Conn.VerboseCallbackHandler = config.Debug
+	err := Conn.Connect(config.Server)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -104,20 +104,20 @@ func connect() {
 
 func onEndOfMotd(e *irc.Event) {
 	SetUserKey(config.Owner, "admin", "true")
-	irccon.Privmsg("nickserv", "identify "+config.Nickserv)
-	irccon.Mode(config.Nick, config.Modes)
+	Conn.Privmsg("nickserv", "identify "+config.Nickserv)
+	Conn.Mode(config.Nick, config.Modes)
 	SetChannelKey(config.Channel, "auto_join", true)
 	Channels.VisitItemsAscend([]byte(""), true, func(i *gkvlite.Item) bool {
 		if GetChannelKey(string(i.Key), "auto_join") {
 			time.Sleep(2 * time.Second)
-			irccon.Join(string(i.Key))
+			Conn.Join(string(i.Key))
 		}
 		return true
 	})
 }
 
 func GetNames(channel string) []string {
-	irccon.SendRaw(fmt.Sprintf("NAMES %v", channel))
+	Conn.SendRaw(fmt.Sprintf("NAMES %v", channel))
 	time.Sleep(1 * time.Second)
 	return ChannelNicks[channel]
 }
@@ -143,17 +143,17 @@ func onEndOfNames(e *irc.Event) {
 func onKick(e *irc.Event) {
 	if e.Arguments[1] == config.Nick {
 		time.Sleep(2 * time.Second)
-		irccon.Join(e.Arguments[0])
+		Conn.Join(e.Arguments[0])
 	}
 }
 
 func configureEvents() {
-	irccon.AddCallback("376", onEndOfMotd)
-	irccon.AddCallback("366", onEndOfNames)
-	irccon.AddCallback("353", onNames)
-	irccon.AddCallback("KICK", onKick)
-	irccon.AddCallback("PRIVMSG", onPRIVMSG)
-	irccon.AddCallback("CTCP_ACTION", onPRIVMSG)
+	Conn.AddCallback("376", onEndOfMotd)
+	Conn.AddCallback("366", onEndOfNames)
+	Conn.AddCallback("353", onNames)
+	Conn.AddCallback("KICK", onKick)
+	Conn.AddCallback("PRIVMSG", onPRIVMSG)
+	Conn.AddCallback("CTCP_ACTION", onPRIVMSG)
 }
 
 // Run reads the Config, connect to the specified IRC server and starts the bot.
@@ -163,7 +163,7 @@ func Run(c *Config) {
 	config = c
 	connect()
 	configureEvents()
-	irccon.Loop()
+	Conn.Loop()
 }
 
 func init() {

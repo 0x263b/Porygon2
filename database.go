@@ -11,10 +11,6 @@ import (
 	"strings"
 )
 
-const (
-	setkvCommand = "set"
-)
-
 var (
 	kvFile   *os.File
 	KV       *gkvlite.Store
