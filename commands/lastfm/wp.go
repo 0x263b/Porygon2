@@ -12,7 +12,7 @@ func whosPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	var playing []string
 
-	for index, user := range users {
+	for _, user := range users {
 		if bot.GetUserKey(user, "lastfm") != "" {
 			playing = append(playing, user)
 		}
