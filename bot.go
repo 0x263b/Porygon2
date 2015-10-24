@@ -140,7 +140,7 @@ func onNames(e *irc.Event) {
 
 	// Combine all responses & remove duplicates
 	old := ChannelNicks[strings.ToLower(e.Arguments[2])]
-	nu := strings.Split(s, "\\s")
+	nu := strings.Split(s, " ")
 	uniq := removeDuplicates(append(old, nu...))
 
 	ChannelNicks[strings.ToLower(e.Arguments[2])] = uniq
