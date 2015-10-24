@@ -12,8 +12,6 @@ import (
 )
 
 const (
-	clientID     = ""
-	clientSecret = ""
 	authURL      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13"
 	translateURL = "https://api.microsofttranslator.com/v2/Http.svc/Translate"
 )
@@ -33,8 +31,8 @@ type String struct {
 func auth() string {
 	parameters := url.Values{}
 	parameters.Add("grant_type", "client_credentials")
-	parameters.Add("client_id", clientID)
-	parameters.Add("client_secret", clientSecret)
+	parameters.Add("client_id", bot.API.TranslateClient)
+	parameters.Add("client_secret", bot.API.TranslateSecret)
 	parameters.Add("scope", "http://api.microsofttranslator.com")
 
 	client := &http.Client{}

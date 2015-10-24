@@ -12,8 +12,7 @@ import (
 )
 
 const (
-	wolframURL   = "http://api.wolframalpha.com/v2/query?appid=%s&input=%s"
-	wolframAppID = ""
+	wolframURL = "http://api.wolframalpha.com/v2/query?appid=%s&input=%s"
 )
 
 func extractURL(text string) string {
@@ -32,7 +31,7 @@ func extractURL(text string) string {
 }
 
 func wolfram(command *bot.Cmd, matches []string) (msg string, err error) {
-	doc, _ := http.Get(fmt.Sprintf(wolframURL, wolframAppID, url.QueryEscape(matches[1])))
+	doc, _ := http.Get(fmt.Sprintf(wolframURL, bot.API.Wolfram, url.QueryEscape(matches[1])))
 	defer doc.Body.Close()
 	root, err := xmlpath.Parse(doc.Body)
 

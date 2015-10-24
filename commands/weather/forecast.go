@@ -21,7 +21,7 @@ func forecast(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	query := fmt.Sprintf("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u=\"c\"", location)
 	data := &yahooWeather{}
-	err = web.GetJSON(fmt.Sprintf(yahooURL, url.QueryEscape(query), yahooAppID), data)
+	err = web.GetJSON(fmt.Sprintf(yahooURL, url.QueryEscape(query), bot.API.Weather), data)
 	if err != nil {
 		return fmt.Sprintf("Could not get weather for: %s", location), nil
 	}

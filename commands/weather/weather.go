@@ -8,8 +8,7 @@ import (
 )
 
 const (
-	yahooURL   = "https://query.yahooapis.com/v1/public/yql?format=json&q=%s&appid=%s&env=store://datatables.org/alltableswithkeys"
-	yahooAppID = ""
+	yahooURL = "https://query.yahooapis.com/v1/public/yql?format=json&q=%s&appid=%s&env=store://datatables.org/alltableswithkeys"
 )
 
 func weather(command *bot.Cmd, matches []string) (msg string, err error) {
@@ -26,7 +25,7 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	query := fmt.Sprintf("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u=\"c\"", location)
 	data := &yahooWeather{}
-	err = web.GetJSON(fmt.Sprintf(yahooURL, url.QueryEscape(query), yahooAppID), data)
+	err = web.GetJSON(fmt.Sprintf(yahooURL, url.QueryEscape(query), bot.API.Weather), data)
 	if err != nil {
 		return fmt.Sprintf("Could not get weather for: %s", location), nil
 	}

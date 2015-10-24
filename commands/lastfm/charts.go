@@ -9,7 +9,6 @@ import (
 
 const (
 	ChartsURL = "http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=%s&period=7day&limit=5&api_key=%s&format=json"
-	LastfmAPI = ""
 )
 
 func charts(command *bot.Cmd, matches []string) (msg string, err error) {
@@ -24,7 +23,7 @@ func charts(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	data := &WeeklyCharts{}
-	err = web.GetJSON(fmt.Sprintf(ChartsURL, username, LastfmAPI), data)
+	err = web.GetJSON(fmt.Sprintf(ChartsURL, username, bot.API.Lastfm), data)
 	if err != nil || data.Error > 0 {
 		return fmt.Sprintf("Could not get charts for %s", username), nil
 	}

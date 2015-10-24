@@ -13,7 +13,6 @@ import (
 const (
 	youtubeSearchURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=%s&key=%s"
 	youtubeVideoURL  = "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=%s&key=%s"
-	youtubeKey       = ""
 )
 
 type youtubeSearch struct {
@@ -155,7 +154,7 @@ func ParseInt64(value string) int64 {
 
 func youtube(command *bot.Cmd, matches []string) (msg string, err error) {
 	search := &youtubeSearch{}
-	err = web.GetJSON(fmt.Sprintf(youtubeSearchURL, url.QueryEscape(matches[1]), youtubeKey), search)
+	err = web.GetJSON(fmt.Sprintf(youtubeSearchURL, url.QueryEscape(matches[1]), bot.API.Youtube), search)
 	if err != nil {
 		return fmt.Sprintf("YouTube | Could not find video for: %s", matches[1]), nil
 	}
@@ -167,7 +166,7 @@ func youtube(command *bot.Cmd, matches []string) (msg string, err error) {
 	id := search.Items[0].ID.Videoid
 
 	video := &youtubeVideo{}
-	err = web.GetJSON(fmt.Sprintf(youtubeVideoURL, id, youtubeKey), video)
+	err = web.GetJSON(fmt.Sprintf(youtubeVideoURL, id, bot.API.Youtube), video)
 	if err != nil {
 		return fmt.Sprintf("YouTube | Could not find video for: %s", matches[1]), nil
 	}

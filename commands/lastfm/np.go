@@ -24,7 +24,7 @@ func nowPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	data := &NowPlaying{}
-	err = web.GetJSON(fmt.Sprintf(NowPlayingURL, username, LastfmAPI), data)
+	err = web.GetJSON(fmt.Sprintf(NowPlayingURL, username, bot.API.Lastfm), data)
 	if err != nil || data.Error > 0 {
 		return fmt.Sprintf("Could not get scrobbles for %s", username), nil
 	}
@@ -40,7 +40,7 @@ func nowPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 	var fmttags string
 	if len(data.Recenttracks.Track[0].Artist.Mbid) > 10 {
 		tags := &ArtistTags{}
-		err = web.GetJSON(fmt.Sprintf(ArtistTagsURL, data.Recenttracks.Track[0].Artist.Mbid, LastfmAPI), tags)
+		err = web.GetJSON(fmt.Sprintf(ArtistTagsURL, data.Recenttracks.Track[0].Artist.Mbid, bot.API.Lastfm), tags)
 		if err != nil {
 			return fmt.Sprintf("Could not get scrobbles for %s", username), nil
 		}

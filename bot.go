@@ -29,6 +29,17 @@ type Config struct {
 	Debug         bool   // This will log all IRC communication to standad output
 	Prefix        string // Prefix used to identify a command. !hello whould be identified as a command
 	Owner         string // Owner of the bot. Used for admin-only commands
+	API
+}
+
+type API struct {
+	Lastfm          string
+	Giphy           string
+	TranslateClient string
+	TranslateSecret string
+	Weather         string
+	Wolfram         string
+	Youtube         string
 }
 
 type ircConnection interface {
