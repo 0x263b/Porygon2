@@ -35,18 +35,27 @@ func main() {
 	bot.Run(config)
 }
 
-func newConfig() *bot.Config {
-	return &bot.Config{
-		Server:   "irc.rizon.net:6697",
-		Channel:  "#Porygon2",
-		User:     "Porygon2",
-		Nick:     "Porygon2",
-		Nickserv: "this is my password",
-		Modes:    "GRp",
-		UseTLS:   true,
-		Debug:    false,
-		Prefix:   "!",
-		Owner:    "joebloggs",
+func newConfig() *bot.Configure {
+	return &bot.Configure{
+		Server:   "irc.rizon.net:6697", // "server:port"
+		Channel:  "#Porygon2",          // "#channel" or "#channel key"
+		User:     "Porygon2",           // "bot"
+		Nick:     "Porygon2",           // "bot"
+		Nickserv: "some password",      // leave as "" if none
+		Modes:    "GRp",                // "GRp"
+		UseTLS:   true,                 // true/false
+		Debug:    false,                // true/false
+		Prefix:   "!",                  // "!"
+		Owner:    "joe",                // your nick
+		API: bot.API{
+			Lastfm:          "",
+			Giphy:           "",
+			TranslateClient: "",
+			TranslateSecret: "",
+			Weather:         "",
+			Wolfram:         "",
+			Youtube:         "",
+		},
 	}
 }
 ```
