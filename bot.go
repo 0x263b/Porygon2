@@ -33,13 +33,15 @@ type Configure struct {
 }
 
 type API struct {
-	Lastfm          string
-	Giphy           string
-	TranslateClient string
-	TranslateSecret string
-	Weather         string
-	Wolfram         string
-	Youtube         string
+	Lastfm                string
+	Giphy                 string
+	TranslateClient       string
+	TranslateSecret       string
+	TwitterConsumerKey    string
+	TwitterConsumerSecret string
+	Weather               string
+	Wolfram               string
+	Youtube               string
 }
 
 type ircConnection interface {
