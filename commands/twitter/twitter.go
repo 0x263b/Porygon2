@@ -3,6 +3,7 @@ package twitter
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/0x263b/Porygon2"
 	"github.com/kurrik/oauth1a"
 	"github.com/kurrik/twittergo"
 	"net/http"
@@ -18,7 +19,7 @@ func LoadCredentials() (client *twittergo.Client, err error) {
 	return
 }
 
-func twitter(screenName string) string {
+func twitter(command *bot.Cmd, matches []string) (msg string, err error) {
 	var (
 		err     error
 		client  *twittergo.Client
