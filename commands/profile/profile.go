@@ -11,17 +11,17 @@ func whoIs(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	lastfm := bot.GetUserKey(nick, "lastfm")
 	if lastfm != "" {
-		lastfm = fmt.Sprintf(" | Last.fm: %s", lastfm)
+		lastfm = fmt.Sprintf(" | Last.fm: %s", string(lastfm))
 	}
 
 	twitter := bot.GetUserKey(nick, "twitter")
 	if twitter != "" {
-		twitter = fmt.Sprintf(" | Twitter: @%s", twitter)
+		twitter = fmt.Sprintf(" | Twitter: @%s", string(twitter))
 	}
 
 	url := bot.GetUserKey(nick, "url")
 	if url != "" {
-		url = fmt.Sprintf(" | URL: %s", url)
+		url = fmt.Sprintf(" | URL: %s", string(url))
 	}
 
 	return fmt.Sprintf("%s%s%s", nick, lastfm, twitter, url), nil
