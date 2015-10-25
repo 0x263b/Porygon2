@@ -86,16 +86,18 @@ exec /path/to/porygon2
 
 ### Functions
 
+* [8ball](#8ball)
 * [Google](#google)
+* [Lastfm](#lastfm)
+* [Random](#random)
+* [Translate](#translate)
+* [Twitter](#twitter)
+* [Urban Dictionary](#urban-dictionary)
+* [URL Parser](#url-parser)
+* [User Profiles](#user-profiles)
+* [Weather](#weather)
 * [WolframAlpha](#wolframalpha)
 * [Youtube](#youtube)
-* [Lastfm](#lastfm)
-* [Weather](#weather)
-* [Translate](#translate)
-* [Urban Dictionary](#urban-dictionary)
-* [Random](#random)
-* [8ball](#8ball)
-* [URL Parser](#url-parser)
 * [Admin functions](#admin-functions)
 
 ***
@@ -166,7 +168,7 @@ Returns the currently playing/last scrobbled track for *user* and top artist tag
 	Weather | Washington | Cloudy 15°C. Wind chill: 15°C. Humidity: 72%
 
 [Yahoo Weather Forecast](http://weather.yahoo.com/) for *location*
-**-f/-fo/-forecasr** *location*
+**-f/-fo/-forecast** *location*
 
 	-forecast Washington, DC
 	Forecast | Washington | Sun: Clouds Early/Clearing Late 16°C/10°C | Mon: Mostly Sunny 19°C/8°C | Tue: Mostly Sunny 23°C/11°C | Wed: Partly Cloudy 24°C/11°C
@@ -179,6 +181,12 @@ Other weather functions will default to this location if none is provided.
 	<joebloggs> -set location Washington, DC
 	<Porygon> joebloggs: location updated to: Washington, DC
 
+
+### Twitter
+Latest tweet for *user* **-tw/-twitter** *user*
+
+	-twitter Guardian
+	Twitter | The Guardian (@guardian) | Aston Villa target Rémi Garde after sacking Tim Sherwood https://t.co/cqcgUpiEOJ via @guardian_sport | 31 seconds ago
 
 ### Translate
 Translates *text* using [Bing translate](http://www.bing.com/translator) and provides a link to [Google Translate](http://translate.google.com/)
@@ -251,6 +259,20 @@ Returns the type, size, and (sometimes) filename of a file URL.
 	https://41.media.tumblr.com/bca28cbcbba3718cd67fd20062df19b9/tumblr_nl8gekhnLU1tdhimpo1_1280.png
 	File | image/png 272kB | 41.media.tumblr.com
 
+
+### User Profiles
+Returns the set variables for a *user*
+
+	-whois qb
+	qb | Twitter: @abnormcore | URL: https://dribbble.com/qb
+	
+Variables are set using **-set url** *url* or **-set twitter** *handle*
+
+	-set twitter someone
+	twitter updated to: someone
+
+	-set url http://www.something.com/
+	url updated to: http://www.something.com/
 
 ***
 
