@@ -24,7 +24,7 @@ func whoIs(command *bot.Cmd, matches []string) (msg string, err error) {
 		url = fmt.Sprintf(" | URL: %s", url)
 	}
 
-	return fmt.Sprintf("%s%s%s", nick, lastfm, twitter, url)
+	return fmt.Sprintf("%s%s%s", nick, lastfm, twitter, url), nil
 }
 
 func setUrl(command *bot.Cmd, matches []string) (msg string, err error) {
