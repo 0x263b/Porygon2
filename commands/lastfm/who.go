@@ -49,7 +49,7 @@ func whosPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 			fmttags = strings.TrimSuffix(fmttags, ", ")
 		}
 
-		bot.Conn.Privmsg(command.Channel, fmt.Sprintf("%s (%s): “%s” by %s | %s",
+		bot.Conn.Privmsg(command.Channel, fmt.Sprintf("%s (%s) | “%s” by %s | %s",
 			user,
 			username,
 			data.Recenttracks.Track[0].Name,
