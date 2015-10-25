@@ -11,20 +11,20 @@ func whoIs(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	lastfm := bot.GetUserKey(nick, "lastfm")
 	if lastfm != "" {
-		lastfm = fmt.Sprintf(" | Last.fm: %s", string(lastfm))
+		lastfm = fmt.Sprintf(" | Last.fm: %s", lastfm)
 	}
 
 	twitter := bot.GetUserKey(nick, "twitter")
 	if twitter != "" {
-		twitter = fmt.Sprintf(" | Twitter: @%s", string(twitter))
+		twitter = fmt.Sprintf(" | Twitter: @%s", twitter)
 	}
 
 	url := bot.GetUserKey(nick, "url")
 	if url != "" {
-		url = fmt.Sprintf(" | URL: %s", string(url))
+		url = fmt.Sprintf(" | URL: %s", url)
 	}
 
-	return fmt.Sprintf("%s%s%s", nick, lastfm, twitter, url), nil
+	return fmt.Sprintf("%s%s%s%s", nick, lastfm, twitter, url), nil
 }
 
 func setUrl(command *bot.Cmd, matches []string) (msg string, err error) {
