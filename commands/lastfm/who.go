@@ -55,6 +55,8 @@ func whosPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 			data.Recenttracks.Track[0].Name,
 			data.Recenttracks.Track[0].Artist.Text,
 			fmttags))
+
+		time.Sleep(500 * time.Millisecond)
 	}
 
 	return "", nil
