@@ -30,6 +30,22 @@ func setUnignore(command *bot.Cmd, matches []string) (msg string, err error) {
 	return "Sorry about that", nil
 }
 
+func listChannels(command *bot.Cmd, matches []string) (msg string, err error) {
+	if !bot.IsAdmin(command.Nick) || !bot.IsPrivateMsg(command.Channel, command.Nick) {
+		return
+	}
+	output := "I'm in:"
+
+	bot.Channels.VisitItemsAscend([]byte(""), true, func(i *gkvlite.Item) bool {
+		if bot.GetChannelKey(string(i.Key), "auto_join") == true {
+			output = fmt.Sprintf("%s %s", output, string(i.Key))
+		}
+		return true
+	})
+
+	return output, nil
+}
+
 func init() {
 	bot.RegisterCommand("^help",
 		help)
@@ -41,4 +57,8 @@ func init() {
 	bot.RegisterCommand(
 		"^set unignore (\\S+)$",
 		setUnignore)
+
+	bot.RegisterCommand(
+		"^list channels$",
+		listChannels)
 }
