@@ -16,6 +16,8 @@ func charts(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	if username == "" {
 		username = checkLastfm(command.Nick)
+	} else {
+		username = checkLastfm(username)
 	}
 
 	if username == "" {

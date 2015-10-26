@@ -17,6 +17,8 @@ func nowPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	if username == "" {
 		username = checkLastfm(command.Nick)
+	} else {
+		username = checkLastfm(username)
 	}
 
 	if username == "" {
@@ -29,7 +31,7 @@ func nowPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 		return fmt.Sprintf("Could not get scrobbles for %s", username), nil
 	}
 	if data.Recenttracks.Attr.Total == "0" {
-		return fmt.Sprintf("Could not get charts for %s", username), nil
+		return fmt.Sprintf("Could not get scrobbles for %s", username), nil
 	}
 
 	album := ""
