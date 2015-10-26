@@ -8,6 +8,7 @@ import (
 	"github.com/kurrik/twittergo"
 	"net/http"
 	"net/url"
+	"regexp"
 )
 
 func LoadCredentials() (client *twittergo.Client, err error) {
@@ -52,10 +53,13 @@ func twitter(command *bot.Cmd, matches []string) (msg string, err error) {
 		if _, err = json.Marshal(tweet); err != nil {
 			return "Twitter | Could not get tweet", nil
 		}
+
+		reg := regexp.MustCompile("\\s+")
+		text := reg.ReplaceAllString(tweet.Text(), " ") // Strip tabs and newlines
 		output = fmt.Sprintf("Twitter | %s (@%s) | %s | %s",
 			tweet.User().Name(),
 			tweet.User().ScreenName(),
-			tweet.Text(),
+			text,
 			Time(tweet.CreatedAt()))
 	}
 
