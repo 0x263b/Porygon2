@@ -102,6 +102,15 @@ exec /path/to/porygon2
 
 ***
 
+### 8Ball
+Gives and 8ball style answer to a *question*
+
+**-8ball** *question*
+
+	-8ball Am I going to score with this one girl I just finished talking to?
+	My sources say no
+
+
 ### Google
 Gets the first result from [Google](https://www.google.com/)/[Google Images](https://images.google.com/) for *search query*
 
@@ -114,24 +123,6 @@ Gets the first result from [Google](https://www.google.com/)/[Google Images](htt
 
 	-img Richard Stallman
 	Google | Richard Stallman | https://upload.wikimedia.org/wikipedia/commons/7/7b/Richard_Stallman_-_F%C3%AAte_de_l'Humanit%C3%A9_2014_-_010.jpg
-
-
-### WolframAlpha
-Finds the answer of *question* using [WolfarmAlpha](http://www.wolframalpha.com/)
-
-**-wa** *question*
-
-	-wa time in Bosnia
-	Wolfram | current time in Bosnia and Herzegovina >>> 12:55:38 pm CEST | Tuesday, October 6, 2015
-
-
-### Youtube
-Gets the first result from [Youtube](https://www.youtube.com) for *search query* 
-
-**-yt/-youtube** *search query*
-
-	-yt Richard Stallman interject
-	YouTube | I'd just like to interject... | 3m1s | https://youtu.be/QlD9UBTcSW4
 
 
 ### Last.fm
@@ -158,35 +149,16 @@ Returns the currently playing/last scrobbled track for *user* and top artist tag
 	
 	-np Cbbleh
 	Last.fm | cbbleh is playing: "Super X-9" by Daikaiju from Daikaiju | Surf, surf rock, instrumental, instrumental surf rock
-	
-
-### Weather
-[Yahoo Weather](http://weather.yahoo.com/) for *location*
-**-w/-we/-weather** *location*
-
-	-weather Washington, DC
-	Weather | Washington | Cloudy 15°C. Wind chill: 15°C. Humidity: 72%
-
-[Yahoo Weather Forecast](http://weather.yahoo.com/) for *location*
-**-f/-fo/-forecast** *location*
-
-	-forecast Washington, DC
-	Forecast | Washington | Sun: Clouds Early/Clearing Late 16°C/10°C | Mon: Mostly Sunny 19°C/8°C | Tue: Mostly Sunny 23°C/11°C | Wed: Partly Cloudy 24°C/11°C
-	
-Associates your current irc nick with *location*.
-Other weather functions will default to this location if none is provided.
-
-**-set location** *location* 
-
-	<joebloggs> -set location Washington, DC
-	<Porygon> joebloggs: location updated to: Washington, DC
 
 
-### Twitter
-Latest tweet for *user* **-tw/-twitter** *user*
+### Random
+Randomly picks an option from an array separated by |
 
-	-twitter Guardian
-	Twitter | The Guardian (@guardian) | Aston Villa target Rémi Garde after sacking Tim Sherwood https://t.co/cqcgUpiEOJ via @guardian_sport | 31 seconds ago
+**-r/-rand** `one | two | three`
+
+	-r do work | don't do work
+	don't do work
+
 
 ### Translate
 Translates *text* using [Bing translate](http://www.bing.com/translator) and provides a link to [Google Translate](http://translate.google.com/)
@@ -214,6 +186,13 @@ Translates *text* using [Bing translate](http://www.bing.com/translator) and pro
 | el   | Greek					| no   | Norwegian
 
 
+### Twitter
+Latest tweet for *user* **-tw/-twitter** *user*
+
+	-twitter Guardian
+	Twitter | The Guardian (@guardian) | Aston Villa target Rémi Garde after sacking Tim Sherwood https://t.co/cqcgUpiEOJ via @guardian_sport | 31 seconds ago
+
+
 ### Urban Dictionary
 Gets the first definition of *query* at [UrbanDictionary](http://www.urbandictionary.com/)
 
@@ -230,24 +209,6 @@ Gets the *n*th definition for *query* (only works for definitions 1-7)
 	-urban 3 4chan
 	UrbanDictionary | 4chan | 4chan.org is the absolute hell hole of the internet, but still amusing. Entering this website requires you leave your humanity behind before entering. WARNING: You will see things on /b/ that you wish you had never seen in your life.
 
-
-### Random
-Randomly picks an option from an array separated by |
-
-**-r/-rand** `one | two | three`
-
-	-r do work | don't do work
-	don't do work
-	
-
-### 8Ball
-Gives and 8ball style answer to a *question*
-
-**-8ball** *question*
-
-	-8ball Am I going to score with this one girl I just finished talking to?
-	My sources say no
-	
 
 ### URL Parser
 Returns the title of a page and the host for html URLs.
@@ -273,6 +234,46 @@ Variables are set using **-set url** *url* or **-set twitter** *handle*
 
 	-set url http://www.something.com/
 	url updated to: http://www.something.com/
+
+
+### Weather
+[Yahoo Weather](http://weather.yahoo.com/) for *location*
+**-w/-we/-weather** *location*
+
+	-weather Washington, DC
+	Weather | Washington | Cloudy 15°C. Wind chill: 15°C. Humidity: 72%
+
+[Yahoo Weather Forecast](http://weather.yahoo.com/) for *location*
+**-f/-fo/-forecast** *location*
+
+	-forecast Washington, DC
+	Forecast | Washington | Sun: Clouds Early/Clearing Late 16°C/10°C | Mon: Mostly Sunny 19°C/8°C | Tue: Mostly Sunny 23°C/11°C | Wed: Partly Cloudy 24°C/11°C
+	
+Associates your current irc nick with *location*.
+Other weather functions will default to this location if none is provided.
+
+**-set location** *location* 
+
+	<joebloggs> -set location Washington, DC
+	<Porygon> joebloggs: location updated to: Washington, DC
+
+
+### WolframAlpha
+Finds the answer of *question* using [WolfarmAlpha](http://www.wolframalpha.com/)
+
+**-wa** *question*
+
+	-wa time in Bosnia
+	Wolfram | current time in Bosnia and Herzegovina >>> 12:55:38 pm CEST | Tuesday, October 6, 2015
+
+
+### Youtube
+Gets the first result from [Youtube](https://www.youtube.com) for *search query* 
+
+**-yt/-youtube** *search query*
+
+	-yt Richard Stallman interject
+	YouTube | I'd just like to interject... | 3m1s | https://youtu.be/QlD9UBTcSW4
 
 ***
 
