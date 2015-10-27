@@ -6,8 +6,15 @@ import (
 	"strings"
 )
 
-func checkLastfm(senderNick string) string {
-	lastfm := bot.GetUserKey(senderNick, "lastfm")
+func checkLastfm(senderNick string, queryNick string) string {
+	if queryNick == "" {
+		lastfm := bot.GetUserKey(senderNick, "lastfm")
+	} else {
+		lastfm := bot.GetUserKey(queryNick, "lastfm")
+		if lastfm == "" {
+			lastfm = queryNick
+		}
+	}
 	return string(lastfm)
 }
 

@@ -12,13 +12,7 @@ const (
 )
 
 func charts(command *bot.Cmd, matches []string) (msg string, err error) {
-	username := matches[1]
-
-	if username == "" {
-		username = checkLastfm(command.Nick)
-	} else {
-		username = checkLastfm(username)
-	}
+	username = checkLastfm(command.Nick, matches[1])
 
 	if username == "" {
 		return "Lastfm not provided, nor on file. Use `-set lastfm <lastfm>` to save", nil
