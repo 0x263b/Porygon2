@@ -20,7 +20,7 @@ func whosPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	for _, user := range playing {
-		username := checkLastfm(user)
+		username := checkLastfm(user, user)
 
 		data := &NowPlaying{}
 		err = web.GetJSON(fmt.Sprintf(NowPlayingURL, username, bot.Config.API.Lastfm), data)

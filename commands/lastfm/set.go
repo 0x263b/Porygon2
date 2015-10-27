@@ -7,10 +7,11 @@ import (
 )
 
 func checkLastfm(senderNick string, queryNick string) string {
+	lastfm := ""
 	if queryNick == "" {
-		lastfm := bot.GetUserKey(senderNick, "lastfm")
+		lastfm = bot.GetUserKey(senderNick, "lastfm")
 	} else {
-		lastfm := bot.GetUserKey(queryNick, "lastfm")
+		lastfm = bot.GetUserKey(queryNick, "lastfm")
 		if lastfm == "" {
 			lastfm = queryNick
 		}
