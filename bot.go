@@ -59,6 +59,7 @@ var (
 
 func logChannel(channel, text, senderNick string) {
 	t := time.Now()
+	channel = strings.Replace(channel, "/", "–", -1)
 
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	if _, err := os.Stat(fmt.Sprintf("%s/logs", dir)); os.IsNotExist(err) {
