@@ -166,12 +166,6 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 		title = s.AttrOr("content", title)
 	})
 
-	if len(title) > 140 {
-		title = title[0:140]
-	} else if len(title) < 1 {
-		title = "(no title)"
-	}
-
 	// Get tweet content from <meta>
 	if finalURL == "twitter.com" {
 		doc.Find("meta[property='og:description']").Each(func(i int, s *goquery.Selection) {
@@ -216,9 +210,7 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 				}
 			}
 
-			if len(title) > 140 {
-				title = title[0:140]
-			} else if len(title) < 1 {
+			if len(title) < 1 {
 				title = "(blank post)"
 			}
 		}
@@ -228,6 +220,12 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	title = sanitize.HTML(title)             // Remove any unwanted html
 	title = reg.ReplaceAllString(title, " ") // Strip tabs and newlines
 	title = strings.TrimSpace(title)         // then trim excessive spaces
+
+	if len(title) > 200 {
+		title = title[0:200]
+	} else if len(title) < 1 {
+		title = "(no title)"
+	}
 
 	return fmt.Sprintf("Title | %s | %s", html.UnescapeString(title), finalURL), nil
 }
