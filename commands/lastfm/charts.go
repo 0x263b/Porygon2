@@ -28,7 +28,13 @@ func charts(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	var fmtcharts string
-	for i := range data.Topartists.Artist[:5] {
+	var trunc int = 5
+
+	if len(data.Topartists.Artist) < trunc {
+		trunc = len(data.Topartists.Artist)
+	}
+
+	for i := range data.Topartists.Artist[:trunc] {
 		fmtcharts += fmt.Sprintf("%s (%s), ", data.Topartists.Artist[i].Name, data.Topartists.Artist[i].Playcount)
 	}
 	fmtcharts = strings.TrimSuffix(fmtcharts, ", ")
