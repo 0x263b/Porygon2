@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	yahooURL = "https://query.yahooapis.com/v1/public/yql?format=json&q=%s&appid=%s&env=store://datatables.org/alltableswithkeys"
+	yahooURL = "https://query.yahooapis.com/v1/public/yql?format=json&q=%s&appid=%s"
 )
 
 func weather(command *bot.Cmd, matches []string) (msg string, err error) {
