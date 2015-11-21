@@ -39,6 +39,10 @@ func Emoji(icon string) string {
 	}
 }
 
+func Round(f float64) float64 {
+	return math.Floor(f + .5)
+}
+
 func getCoords(location string) string {
 	var err error
 	geo := &Geocode{}
@@ -81,12 +85,12 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 		location,
 		data.Currently.Summary,
 		Emoji(data.Currently.Icon),
-		math.Ceil(data.Currently.Temperature),
+		Round(data.Currently.Temperature),
 		units,
 		Emoji(data.Daily.Data[0].Icon),
-		math.Ceil(data.Daily.Data[0].TemperatureMax),
+		Round(data.Daily.Data[0].TemperatureMax),
 		units,
-		math.Ceil(data.Daily.Data[0].TemperatureMin),
+		Round(data.Daily.Data[0].TemperatureMin),
 		units), nil
 }
 

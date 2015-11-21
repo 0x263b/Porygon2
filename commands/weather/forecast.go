@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/0x263b/Porygon2"
 	"github.com/0x263b/Porygon2/web"
-	"math"
 	"time"
 )
 
@@ -44,9 +43,9 @@ func forecast(command *bot.Cmd, matches []string) (msg string, err error) {
 		output += fmt.Sprintf("| %s: %s %v%s/%v%s ",
 			day,
 			Emoji(data.Daily.Data[i].Icon),
-			math.Ceil(data.Daily.Data[i].TemperatureMax),
+			Round(data.Daily.Data[i].TemperatureMax),
 			units,
-			math.Ceil(data.Daily.Data[i].TemperatureMin),
+			Round(data.Daily.Data[i].TemperatureMin),
 			units,
 		)
 	}
