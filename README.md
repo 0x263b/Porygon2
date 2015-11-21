@@ -92,7 +92,7 @@ exec /path/to/porygon2
 * [Last.fm](http://www.last.fm/api): [commands/lastfm](commands/lastfm/)
 * [Forecast.io](https://developer.forecast.io/docs/v2): [commands/weather](commands/weather/weather.go)
 * [Microsoft Translator](https://msdn.microsoft.com/en-us/library/hh454949.aspx): [commands/translate](commands/translate/translate.go)
-* [Twitter](https://dev.twitter.com/rest/public): [commands/twitter](commands/twitter/tiwtter.go)
+* [Twitter](https://dev.twitter.com/rest/public): [commands/twitter](commands/twitter/twitter.go)
 * [Wolfram Alpha](http://products.wolframalpha.com/api/): [commands/wolfram](commands/wolfram/wolfram.go)
 * [Youtube](https://developers.google.com/youtube/v3/): [commands/youtube](commands/youtube/youtube.go)
 
