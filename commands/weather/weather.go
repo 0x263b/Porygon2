@@ -55,7 +55,7 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 	var coords string
 
 	if location == "" {
-		coords = checkLocation(command.Nick)
+		location, coords = checkLocation(command.Nick)
 		if coords == "" {
 			return "Location not provided, nor on file. Use `-set location <location>` to save", nil
 		}

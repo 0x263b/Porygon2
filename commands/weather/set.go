@@ -8,9 +8,10 @@ import (
 	"strings"
 )
 
-func checkLocation(senderNick string) string {
-	coords := bot.GetUserKey(senderNick, "coords")
-	return string(coords)
+func checkLocation(senderNick string) (location string, coords string) {
+	location = bot.GetUserKey(senderNick, "location")
+	coords = bot.GetUserKey(senderNick, "coords")
+	return string(location), string(coords)
 }
 
 func setLocation(command *bot.Cmd, matches []string) (msg string, err error) {
