@@ -24,7 +24,6 @@ func GetBody(url string) ([]byte, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-
 	return ioutil.ReadAll(res.Body)
 }
 

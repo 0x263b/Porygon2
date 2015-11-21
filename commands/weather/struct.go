@@ -1,82 +1,122 @@
 package weather
 
-import (
-	"time"
-)
-
-type yahooWeather struct {
-	Query struct {
-		Count   int       `json:"count"`
-		Created time.Time `json:"created"`
-		Lang    string    `json:"lang"`
-		Results struct {
-			Channel struct {
-				Title         string `json:"title"`
-				Link          string `json:"link"`
-				Description   string `json:"description"`
-				Language      string `json:"language"`
-				Lastbuilddate string `json:"lastBuildDate"`
-				TTL           string `json:"ttl"`
-				Location      struct {
-					City    string `json:"city"`
-					Country string `json:"country"`
-					Region  string `json:"region"`
-				} `json:"location"`
-				Units struct {
-					Distance    string `json:"distance"`
-					Pressure    string `json:"pressure"`
-					Speed       string `json:"speed"`
-					Temperature string `json:"temperature"`
-				} `json:"units"`
-				Wind struct {
-					Chill     string `json:"chill"`
-					Direction string `json:"direction"`
-					Speed     string `json:"speed"`
-				} `json:"wind"`
-				Atmosphere struct {
-					Humidity   string `json:"humidity"`
-					Pressure   string `json:"pressure"`
-					Rising     string `json:"rising"`
-					Visibility string `json:"visibility"`
-				} `json:"atmosphere"`
-				Astronomy struct {
-					Sunrise string `json:"sunrise"`
-					Sunset  string `json:"sunset"`
-				} `json:"astronomy"`
-				Image struct {
-					Title  string `json:"title"`
-					Width  string `json:"width"`
-					Height string `json:"height"`
-					Link   string `json:"link"`
-					URL    string `json:"url"`
-				} `json:"image"`
-				Item struct {
-					Title     string `json:"title"`
-					Lat       string `json:"lat"`
-					Long      string `json:"long"`
-					Link      string `json:"link"`
-					Pubdate   string `json:"pubDate"`
-					Condition struct {
-						Code string `json:"code"`
-						Date string `json:"date"`
-						Temp string `json:"temp"`
-						Text string `json:"text"`
-					} `json:"condition"`
-					Description string `json:"description"`
-					Forecast    []struct {
-						Code string `json:"code"`
-						Date string `json:"date"`
-						Day  string `json:"day"`
-						High string `json:"high"`
-						Low  string `json:"low"`
-						Text string `json:"text"`
-					} `json:"forecast"`
-					GUID struct {
-						Ispermalink string `json:"isPermaLink"`
-						Content     string `json:"content"`
-					} `json:"guid"`
-				} `json:"item"`
-			} `json:"channel"`
-		} `json:"results"`
-	} `json:"query"`
+type Geocode struct {
+	Results []struct {
+		AddressComponents []struct {
+			LongName  string   `json:"long_name"`
+			ShortName string   `json:"short_name"`
+			Types     []string `json:"types"`
+		} `json:"address_components"`
+		FormattedAddress string `json:"formatted_address"`
+		Geometry         struct {
+			Bounds struct {
+				Northeast struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"northeast"`
+				Southwest struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"southwest"`
+			} `json:"bounds"`
+			Location struct {
+				Lat float64 `json:"lat"`
+				Lng float64 `json:"lng"`
+			} `json:"location"`
+			LocationType string `json:"location_type"`
+			Viewport     struct {
+				Northeast struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"northeast"`
+				Southwest struct {
+					Lat float64 `json:"lat"`
+					Lng float64 `json:"lng"`
+				} `json:"southwest"`
+			} `json:"viewport"`
+		} `json:"geometry"`
+		PlaceID string   `json:"place_id"`
+		Types   []string `json:"types"`
+	} `json:"results"`
+	Status string `json:"status"`
 }
+
+type Flags struct {
+	DarkSkyUnavailable string   `json:"darksky-unavailable"`
+	DarkSkyStations    []string `json:"darksky-stations"`
+	DataPointStations  []string `json:"datapoint-stations"`
+	ISDStations        []string `json:"isds-stations"`
+	LAMPStations       []string `json:"lamp-stations"`
+	METARStations      []string `json:"metars-stations"`
+	METNOLicense       string   `json:"metnol-license"`
+	Sources            []string `json:"sources"`
+	Units              string   `json:"units"`
+}
+
+type DataPoint struct {
+	Time                   int64   `json:"time"`
+	Summary                string  `json:"summary"`
+	Icon                   string  `json:"icon"`
+	SunriseTime            float64 `json:"sunriseTime"`
+	SunsetTime             float64 `json:"sunsetTime"`
+	PrecipIntensity        float64 `json:"precipIntensity"`
+	PrecipIntensityMax     float64 `json:"precipIntensityMax"`
+	PrecipIntensityMaxTime float64 `json:"precipIntensityMaxTime"`
+	PrecipProbability      float64 `json:"precipProbability"`
+	PrecipType             string  `json:"precipType"`
+	PrecipAccumulation     float64 `json:"precipAccumulation"`
+	Temperature            float64 `json:"temperature"`
+	TemperatureMin         float64 `json:"temperatureMin"`
+	TemperatureMinTime     float64 `json:"temperatureMinTime"`
+	TemperatureMax         float64 `json:"temperatureMax"`
+	TemperatureMaxTime     float64 `json:"temperatureMaxTime"`
+	ApparentTemperature    float64 `json:"apparentTemperature"`
+	DewPoint               float64 `json:"dewPoint"`
+	WindSpeed              float64 `json:"windSpeed"`
+	WindBearing            float64 `json:"windBearing"`
+	CloudCover             float64 `json:"cloudCover"`
+	Humidity               float64 `json:"humidity"`
+	Pressure               float64 `json:"pressure"`
+	Visibility             float64 `json:"visibility"`
+	Ozone                  float64 `json:"ozone"`
+	MoonPhase              float64 `json:"moonPhase"`
+}
+
+type DataBlock struct {
+	Summary string      `json:"summary"`
+	Icon    string      `json:"icon"`
+	Data    []DataPoint `json:"data"`
+}
+
+type alert struct {
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Time        float64 `json:"time"`
+	Expires     float64 `json:"expires"`
+	URI         string  `json:"uri"`
+}
+
+type Forecast struct {
+	Latitude  float64   `json:"latitude"`
+	Longitude float64   `json:"longitude"`
+	Timezone  string    `json:"timezone"`
+	Offset    float64   `json:"offset"`
+	Currently DataPoint `json:"currently"`
+	Minutely  DataBlock `json:"minutely"`
+	Hourly    DataBlock `json:"hourly"`
+	Daily     DataBlock `json:"daily"`
+	Alerts    []alert   `json:"alerts"`
+	Flags     Flags     `json:"flags"`
+	APICalls  int       `json:"apicalls"`
+	Code      int       `json:"code"`
+}
+
+type Units string
+
+const (
+	CA   Units = "ca"
+	SI   Units = "si"
+	US   Units = "us"
+	UK   Units = "uk"
+	AUTO Units = "auto"
+)

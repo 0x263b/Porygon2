@@ -4,52 +4,90 @@ import (
 	"fmt"
 	"github.com/0x263b/Porygon2"
 	"github.com/0x263b/Porygon2/web"
+	"math"
 	"net/url"
 )
 
 const (
-	yahooURL = "https://query.yahooapis.com/v1/public/yql?format=json&q=%s&appid=%s"
+	GeocodeURL = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s"
+	DarkSkyURL = "https://api.forecast.io/forecast/%s/%s?units=auto&exclude=minutely,hourly,alerts"
 )
+
+func Emoji(icon string) string {
+	if icon == "clear-day" {
+		return "☀️"
+	} else if icon == "clear-night" {
+		return "🌙"
+	} else if icon == "rain" {
+		return "☔️"
+	} else if icon == "snow" {
+		return "❄️"
+	} else if icon == "sleet" {
+		return "☔️❄️"
+	} else if icon == "wind" {
+		return "💨"
+	} else if icon == "fog" {
+		return "🌁"
+	} else if icon == "cloudy" {
+		return "☁️"
+	} else if icon == "partly-cloudy-day" {
+		return "⛅"
+	} else if icon == "partly-cloudy-night" {
+		return "⛅"
+	} else {
+		return ""
+	}
+}
+
+func getCoords(location string) string {
+	var err error
+	geo := &Geocode{}
+	err = web.GetJSON(fmt.Sprintf(GeocodeURL, url.QueryEscape(location), bot.Config.API.Geocode), geo)
+	if err != nil || geo.Status != "OK" {
+		return ""
+	}
+	return fmt.Sprintf("%v,%v", geo.Results[0].Geometry.Location.Lat, geo.Results[0].Geometry.Location.Lng)
+}
 
 func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 
-	location := matches[1]
+	var location string = matches[1]
+	var coords string
 
 	if location == "" {
-		location = checkLocation(command.Nick)
+		coords = checkLocation(command.Nick)
+		if coords == "" {
+			return "Location not provided, nor on file. Use `-set location <location>` to save", nil
+		}
+	} else {
+		coords = getCoords(location)
+		if coords == "" {
+			return fmt.Sprintf("Could not find %s", location), nil
+		}
 	}
 
-	if location == "" {
-		return "Location not provided, nor on file. Use `-set location <location>` to save", nil
-	}
-
-	query := fmt.Sprintf("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u=\"c\"", location)
-	data := &yahooWeather{}
-	err = web.GetJSON(fmt.Sprintf(yahooURL, url.QueryEscape(query), bot.Config.API.Weather), data)
+	data := &Forecast{}
+	err = web.GetJSON(fmt.Sprintf(DarkSkyURL, bot.Config.API.Weather, coords), data)
 	if err != nil {
 		return fmt.Sprintf("Could not get weather for: %s", location), nil
 	}
-	if data.Query.Results.Channel.Location.City == "" {
-		return fmt.Sprintf("Could not get weather for: %s", location), nil
+
+	units := "°C"
+	if data.Flags.Units == "us" {
+		units = "°F"
 	}
 
-	output := fmt.Sprintf(
-		"Weather | %s | %s %s°%s. %s: %s %s°%s/%s°%s. Wind chill: %s°%s. Humidity: %s%%",
-		data.Query.Results.Channel.Location.City,
-		data.Query.Results.Channel.Item.Condition.Text,
-		data.Query.Results.Channel.Item.Condition.Temp,
-		data.Query.Results.Channel.Units.Temperature,
-		data.Query.Results.Channel.Item.Forecast[0].Day,
-		data.Query.Results.Channel.Item.Forecast[0].Text,
-		data.Query.Results.Channel.Item.Forecast[0].High,
-		data.Query.Results.Channel.Units.Temperature,
-		data.Query.Results.Channel.Item.Forecast[0].Low,
-		data.Query.Results.Channel.Units.Temperature,
-		data.Query.Results.Channel.Wind.Chill,
-		data.Query.Results.Channel.Units.Temperature,
-		data.Query.Results.Channel.Atmosphere.Humidity)
-
-	return output, nil
+	return fmt.Sprintf("Weather | %s | Now: %s %s %v%s. Today: %s %v%s/%v%s",
+		location,
+		data.Currently.Summary,
+		Emoji(data.Currently.Icon),
+		math.Ceil(data.Currently.Temperature),
+		units,
+		Emoji(data.Daily.Data[0].Icon),
+		math.Ceil(data.Daily.Data[0].TemperatureMax),
+		units,
+		math.Ceil(data.Daily.Data[0].TemperatureMin),
+		units), nil
 }
 
 func init() {

@@ -42,6 +42,7 @@ type API struct {
 	Weather               string
 	Wolfram               string
 	Youtube               string
+	Geocode               string
 }
 
 type ircConnection interface {

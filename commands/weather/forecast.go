@@ -4,40 +4,50 @@ import (
 	"fmt"
 	"github.com/0x263b/Porygon2"
 	"github.com/0x263b/Porygon2/web"
-	"net/url"
+	"math"
+	"time"
 )
 
 func forecast(command *bot.Cmd, matches []string) (msg string, err error) {
 
-	location := matches[1]
+	var location string = matches[1]
+	var coords string
 
 	if location == "" {
-		location = checkLocation(command.Nick)
+		coords = checkLocation(command.Nick)
+		if coords == "" {
+			return "Location not provided, nor on file. Use `-set location <location>` to save", nil
+		}
+	} else {
+		coords = getCoords(location)
+		if coords == "" {
+			return fmt.Sprintf("Could not find %s", location), nil
+		}
 	}
 
-	if location == "" {
-		return "Location not provided, nor on file. Use `-set location <location>` to save", nil
-	}
-
-	query := fmt.Sprintf("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u=\"c\"", location)
-	data := &yahooWeather{}
-	err = web.GetJSON(fmt.Sprintf(yahooURL, url.QueryEscape(query), bot.Config.API.Weather), data)
+	data := &Forecast{}
+	err = web.GetJSON(fmt.Sprintf(DarkSkyURL, bot.Config.API.Weather, coords), data)
 	if err != nil {
 		return fmt.Sprintf("Could not get weather for: %s", location), nil
 	}
-	if data.Query.Results.Channel.Location.City == "" {
-		return fmt.Sprintf("Could not get weather for: %s", location), nil
+
+	units := "°C"
+	if data.Flags.Units == "us" {
+		units = "°F"
 	}
 
-	output := fmt.Sprintf("Forecast | %s ", data.Query.Results.Channel.Location.City)
-	for i := range data.Query.Results.Channel.Item.Forecast {
-		output += fmt.Sprintf("| %s: %s %s°%s/%s°%s ",
-			data.Query.Results.Channel.Item.Forecast[i].Day,
-			data.Query.Results.Channel.Item.Forecast[i].Text,
-			data.Query.Results.Channel.Item.Forecast[i].High,
-			data.Query.Results.Channel.Units.Temperature,
-			data.Query.Results.Channel.Item.Forecast[i].Low,
-			data.Query.Results.Channel.Units.Temperature,
+	output := fmt.Sprintf("Forecast | %s ", location)
+
+	for i := range data.Daily.Data[0:4] {
+		tm := time.Unix(data.Daily.Data[i].Time, 0)
+		day := tm.Weekday()
+		output += fmt.Sprintf("| %s: %s %v%s/%v%s ",
+			day,
+			Emoji(data.Daily.Data[i].Icon),
+			math.Ceil(data.Daily.Data[i].TemperatureMax),
+			units,
+			math.Ceil(data.Daily.Data[i].TemperatureMin),
+			units,
 		)
 	}
 
