@@ -5,7 +5,7 @@ An IRC Bot written in Go
 ### Install
 ```
 # Dependencies
-go get github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/PuerkitoBio/goquery github.com/dustin/go-humanize github.com/kennygrant/sanitize gopkg.in/xmlpath.v2 github.com/kennygrant/sanitize
+go get github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/PuerkitoBio/goquery github.com/dustin/go-humanize github.com/kennygrant/sanitize gopkg.in/xmlpath.v2 github.com/kennygrant/sanitize github.com/kurrik/oauth1a github.com/kurrik/twittergo
 
 # Porygon2
 go get github.com/0x263b/Porygon2
@@ -51,6 +51,7 @@ func newConfig() *bot.Configure {
 		API: bot.API{
 			Lastfm:                "",
 			Giphy:                 "",
+			Geocode:               "",
 			TranslateClient:       "",
 			TranslateSecret:       "",
 			TwitterConsumerKey:    "",
@@ -83,6 +84,19 @@ respawn
 
 exec /path/to/porygon2
 ```
+
+#### APIs
+
+* [Giphy](https://github.com/Giphy/GiphyAPI): [commands/giphy](commands/giphy/giphy.go)
+* [Google Geocode](https://developers.google.com/maps/documentation/geocoding/intro): [commands/weather](commands/weather/weather.go)
+* [Last.fm](http://www.last.fm/api): [commands/lastfm](commands/lastfm/)
+* [Forecast.io](https://developer.forecast.io/docs/v2): [commands/weather](commands/weather/weather.go)
+* [Microsoft Translator](https://msdn.microsoft.com/en-us/library/hh454949.aspx): [commands/translate](commands/translate/translate.go)
+* [Twitter](https://dev.twitter.com/rest/public): [commands/twitter](commands/twitter/tiwtter.go)
+* [Wolfram Alpha](http://products.wolframalpha.com/api/): [commands/wolfram](commands/wolfram/wolfram.go)
+* [Youtube](https://developers.google.com/youtube/v3/): [commands/youtube](commands/youtube/youtube.go)
+
+***
 
 ### Functions
 
