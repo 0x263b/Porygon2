@@ -45,6 +45,9 @@ func urban(command *bot.Cmd, matches []string) (msg string, err error) {
 	if results.ResultType == "no_results" {
 		return fmt.Sprintf("Urban Dictionary | %s | (No definition found)", matches[2]), nil
 	}
+	if int(i+1) > len(results.List) {
+		return fmt.Sprintf("Urban Dictionary | %s | (No definition found)", matches[2]), nil
+	}
 
 	word := results.List[i].Word
 	definition := results.List[i].Definition
