@@ -39,7 +39,8 @@ func forecast(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	for i := range data.Daily.Data[0:4] {
 		tm := time.Unix(data.Daily.Data[i].Time, 0)
-		day := tm.Weekday()
+		loc, _ := time.LoadLocation(data.Timezone)
+		day := tm.In(loc).Weekday()
 		output += fmt.Sprintf("| %s: %s %v%s/%v%s ",
 			day,
 			Emoji(data.Daily.Data[i].Icon),
