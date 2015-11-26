@@ -41,8 +41,10 @@ func nowPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 			return fmt.Sprintf("Could not get scrobbles for %s", username), nil
 		}
 
-		for i := range tags.Toptags.Tag[:4] {
-			fmttags += fmt.Sprintf("%s, ", tags.Toptags.Tag[i].Name)
+		if len(tags.Toptags.Tag) > 4 {
+			for i := range tags.Toptags.Tag[:4] {
+				fmttags += fmt.Sprintf("%s, ", tags.Toptags.Tag[i].Name)
+			}
 		}
 
 		fmttags = strings.TrimSuffix(fmttags, ", ")
