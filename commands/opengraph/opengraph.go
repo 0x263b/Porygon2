@@ -208,6 +208,8 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 						}
 					}
 				}
+
+				title = sanitize.HTML(title) // Remove any unwanted html
 			}
 
 			if len(title) < 1 {
@@ -217,7 +219,6 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	}
 
 	reg := regexp.MustCompile("\\s+")
-	title = sanitize.HTML(title)             // Remove any unwanted html
 	title = reg.ReplaceAllString(title, " ") // Strip tabs and newlines
 	title = strings.TrimSpace(title)         // then trim excessive spaces
 
