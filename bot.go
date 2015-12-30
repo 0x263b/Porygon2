@@ -58,7 +58,11 @@ var (
 	ChannelNicks = make(map[string][]string)
 )
 
-func logChannel(channel, text, senderNick string) {
+const (
+	layout = "2006-01-02 15:04:05 -0700"
+)
+
+func logChannel(channel, text, senderNick string, action bool) {
 	t := time.Now()
 	channel = strings.Replace(channel, "/", "–", -1)
 
@@ -77,10 +81,16 @@ func logChannel(channel, text, senderNick string) {
 	defer f.Close()
 
 	log.SetFlags(0)
-	log.SetPrefix(t.Format(time.RFC3339))
 	log.SetOutput(f)
 
-	line := fmt.Sprintf("\t%s\t%s", senderNick, text)
+	var line string
+
+	if action {
+		line = fmt.Sprintf("[%s] * %s %s", t.Format(layout), senderNick, text)
+	} else {
+		line = fmt.Sprintf("[%s] <%s> %s", t.Format(layout), senderNick, text)
+	}
+
 	log.Println(line)
 	return
 }
@@ -88,9 +98,17 @@ func logChannel(channel, text, senderNick string) {
 func onPRIVMSG(e *irc.Event) {
 	if e.Arguments[0] != Conn.GetNick() {
 		channel := strings.Replace(e.Arguments[0], "#", "", -1)
-		logChannel(channel, e.Message(), e.Nick)
+		logChannel(channel, e.Message(), e.Nick, false)
 	}
 	messageReceived(e.Arguments[0], e.Message(), e.Nick, Conn)
+}
+
+func onACTION(e *irc.Event) {
+	if e.Arguments[0] != Conn.GetNick() {
+		channel := strings.Replace(e.Arguments[0], "#", "", -1)
+		logChannel(channel, e.Message(), e.Nick, true)
+	}
+	// messageReceived(e.Arguments[0], e.Message(), e.Nick, Conn)
 }
 
 func getServerName() string {
@@ -169,7 +187,7 @@ func ConfigureEvents() {
 	Conn.AddCallback("353", onNames)
 	Conn.AddCallback("KICK", onKick)
 	Conn.AddCallback("PRIVMSG", onPRIVMSG)
-	Conn.AddCallback("CTCP_ACTION", onPRIVMSG)
+	Conn.AddCallback("CTCP_ACTION", onACTION)
 }
 
 // Run reads the Config, connect to the specified IRC server and starts the bot.
