@@ -12,44 +12,16 @@ const (
 )
 
 type Showinfo struct {
-	ID        int      `json:"id"`
-	URL       string   `json:"url"`
-	Name      string   `json:"name"`
-	Type      string   `json:"type"`
-	Language  string   `json:"language"`
-	Genres    []string `json:"genres"`
-	Status    string   `json:"status"`
-	Runtime   int      `json:"runtime"`
-	Premiered string   `json:"premiered"`
-	Schedule  struct {
+	Name     string `json:"name"`
+	Status   string `json:"status"`
+	Schedule struct {
 		Time string   `json:"time"`
 		Days []string `json:"days"`
 	} `json:"schedule"`
-	Rating struct {
-		Average float64 `json:"average"`
-	} `json:"rating"`
-	Weight  int `json:"weight"`
 	Network struct {
-		ID      int    `json:"id"`
-		Name    string `json:"name"`
-		Country struct {
-			Name     string `json:"name"`
-			Code     string `json:"code"`
-			Timezone string `json:"timezone"`
-		} `json:"country"`
+		Name string `json:"name"`
 	} `json:"network"`
-	Webchannel interface{} `json:"webChannel"`
-	Externals  struct {
-		Tvrage  int `json:"tvrage"`
-		Thetvdb int `json:"thetvdb"`
-	} `json:"externals"`
-	Image struct {
-		Medium   string `json:"medium"`
-		Original string `json:"original"`
-	} `json:"image"`
-	Summary string `json:"summary"`
-	Updated int    `json:"updated"`
-	Links   struct {
+	Links struct {
 		Self struct {
 			Href string `json:"href"`
 		} `json:"self"`
@@ -63,25 +35,10 @@ type Showinfo struct {
 }
 
 type Nextepisode struct {
-	ID       int    `json:"id"`
-	URL      string `json:"url"`
-	Name     string `json:"name"`
-	Season   int    `json:"season"`
-	Number   int    `json:"number"`
-	Airdate  string `json:"airdate"`
-	Airtime  string `json:"airtime"`
-	Airstamp string `json:"airstamp"`
-	Runtime  int    `json:"runtime"`
-	Image    struct {
-		Medium   string `json:"medium"`
-		Original string `json:"original"`
-	} `json:"image"`
-	Summary string `json:"summary"`
-	Links   struct {
-		Self struct {
-			Href string `json:"href"`
-		} `json:"self"`
-	} `json:"_links"`
+	Season  int    `json:"season"`
+	Number  int    `json:"number"`
+	Airdate string `json:"airdate"`
+	Airtime string `json:"airtime"`
 }
 
 func tvmaze(command *bot.Cmd, matches []string) (msg string, err error) {
@@ -96,6 +53,10 @@ func tvmaze(command *bot.Cmd, matches []string) (msg string, err error) {
 		err = web.GetJSON(results.Links.Nextepisode.Href, next)
 		if err != nil {
 			return "TVmaze | Could not find show", nil
+		}
+
+		if len(results.Schedule.Days) == 0 {
+			results.Schedule.Days = []string{"???"}
 		}
 
 		output := fmt.Sprintf("TVmaze | %s | Airtime: %s %s on %s | Status: %s | Next Ep: S%vE%v at %s %s",
