@@ -77,11 +77,17 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	units := "°C"
+	windspeed := "m/s"
 	if data.Flags.Units == "us" {
 		units = "°F"
+		windspeed = "mph"
+	} else if data.Flags.Units == "ca" {
+		windspeed = "km/h"
+	} else if data.Flags.Units == "uk2" {
+		windspeed = "mph"
 	}
 
-	return fmt.Sprintf("Weather | %s | Now: %s %s %v%s. Today: %s %v%s/%v%s",
+	return fmt.Sprintf("Weather | %s | Now: %s %s %v%s. Today: %s %v%s/%v%s Humidity: %v%%. Wind: %v%s. Precipitation: %v%%.",
 		location,
 		data.Currently.Summary,
 		Emoji(data.Currently.Icon),
@@ -91,7 +97,11 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 		Round(data.Daily.Data[0].TemperatureMax),
 		units,
 		Round(data.Daily.Data[0].TemperatureMin),
-		units), nil
+		units,
+		data.Daily.Data[0].Humidity*100,
+		data.Daily.Data[0].WindSpeed,
+		windspeed,
+		data.Daily.Data[0].PrecipProbability*100), nil
 }
 
 func init() {
