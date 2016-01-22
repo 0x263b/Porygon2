@@ -87,7 +87,7 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 		windspeed = "mph"
 	}
 
-	return fmt.Sprintf("Weather | %s | Now: %s %s %v%s. Today: %s %v%s/%v%s Humidity: %v%%. Wind: %v%s. Precipitation: %v%%.",
+	return fmt.Sprintf("Weather | %s | Now: %s %s %v%s. Today: %s %v%s/%v%s. Humidity: %v%%. Wind: %v%s. Precipitation: %v%%.",
 		location,
 		data.Currently.Summary,
 		Emoji(data.Currently.Icon),
@@ -98,10 +98,10 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 		units,
 		Round(data.Daily.Data[0].TemperatureMin),
 		units,
-		data.Daily.Data[0].Humidity*100,
+		int(data.Daily.Data[0].Humidity*100),
 		data.Daily.Data[0].WindSpeed,
 		windspeed,
-		data.Daily.Data[0].PrecipProbability*100), nil
+		int(data.Daily.Data[0].PrecipProbability*100)), nil
 }
 
 func init() {
