@@ -187,8 +187,8 @@ Translates *text* using [Bing translate](http://www.bing.com/translator) and pro
 | ar   | Arabic					| ht   | Haitian Creole		| fa   | Persian (Farsi) 
 | bg   | Bulgarian				| he   | Hebrew				| pl   | Polish	
 | ca   | Catalan				| hi   | Hindi				| ro   | Romanian
-| zh-CHS| Chinese Simplified	| mww  | Himong Daw			| ru   | Russian
-| zh-CHT| Chinese Traditional 	| hu   | Hungarian			| sk   | Slovak
+| cn   | Chinese Simplified		| mww  | Himong Daw			| ru   | Russian
+| tw   | Chinese Traditional 	| hu   | Hungarian			| sk   | Slovak
 | cs   | Czech					| id   | Indonesian			| sl   | Slovenian
 | da   | Danish					| it   | Italian			| es   | Spanish
 | nl   | Dutch					| ja   | Japanese			| sv   | Swedish

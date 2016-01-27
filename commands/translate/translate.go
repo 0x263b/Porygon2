@@ -49,10 +49,24 @@ func auth() string {
 }
 
 func translate(command *bot.Cmd, matches []string) (msg string, err error) {
+
+	from := matches[1]
+	to := matches[2]
+
+	if from == "cn" {
+		from = "zh-CHS"
+	} else if from == "tw" {
+		from = "zh-CHT"
+	} else if to == "cn" {
+		to = "zh-CHS"
+	} else if to == "tw" {
+		to = "zh-CHT"
+	}
+
 	transURL, _ := url.Parse(translateURL)
 	parameters := url.Values{}
-	parameters.Add("from", matches[1])
-	parameters.Add("to", matches[2])
+	parameters.Add("from", from)
+	parameters.Add("to", to)
 	parameters.Add("text", matches[3])
 	transURL.RawQuery = parameters.Encode()
 
@@ -72,9 +86,9 @@ func translate(command *bot.Cmd, matches []string) (msg string, err error) {
 	xml.Unmarshal(body, &dict)
 
 	if dict.Translation == "" {
-		return fmt.Sprintf("Translate | %s >> %s | Could not get translation", matches[1], matches[2]), nil
+		return fmt.Sprintf("Translate | %s >> %s | Could not get translation", from, to), nil
 	}
-	return fmt.Sprintf("Translate | %s >> %s | %s", matches[1], matches[2], dict.Translation), nil
+	return fmt.Sprintf("Translate | %s >> %s | %s", from, to, dict.Translation), nil
 }
 
 func init() {
