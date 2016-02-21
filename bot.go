@@ -58,10 +58,6 @@ var (
 	ChannelNicks = make(map[string][]string)
 )
 
-const (
-	layout = "2006-01-02 15:04:05 -0700"
-)
-
 func logChannel(channel, text, senderNick string, action bool) {
 	t := time.Now()
 	channel = strings.Replace(channel, "/", "–", -1)
@@ -86,9 +82,9 @@ func logChannel(channel, text, senderNick string, action bool) {
 	var line string
 
 	if action {
-		line = fmt.Sprintf("[%s] * %s %s", t.Format(layout), senderNick, text)
+		line = fmt.Sprintf("[%s] * %s %s", t.Format(time.RFC3339), senderNick, text)
 	} else {
-		line = fmt.Sprintf("[%s] <%s> %s", t.Format(layout), senderNick, text)
+		line = fmt.Sprintf("[%s] <%s> %s", t.Format(time.RFC3339), senderNick, text)
 	}
 
 	log.Println(line)
