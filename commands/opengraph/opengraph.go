@@ -22,31 +22,24 @@ import (
 
 // 4chan API thread structure
 // https://github.com/4chan/4chan-API
-type Thread struct {
+type ChanPost struct {
 	Posts []struct {
-		No          int    `json:"no"`
-		Now         string `json:"now"`
-		Name        string `json:"name"`
-		Sub         string `json:"sub"`
-		Com         string `json:"com"`
-		Filename    string `json:"filename"`
-		Ext         string `json:"ext"`
-		W           int    `json:"w"`
-		H           int    `json:"h"`
-		TnW         int    `json:"tn_w"`
-		TnH         int    `json:"tn_h"`
-		Tim         int64  `json:"tim"`
-		Time        int    `json:"time"`
-		Md5         string `json:"md5"`
-		Fsize       int    `json:"fsize"`
-		Resto       int    `json:"resto"`
-		Bumplimit   int    `json:"bumplimit"`
-		Imagelimit  int    `json:"imagelimit"`
-		SemanticURL string `json:"semantic_url"`
-		Replies     int    `json:"replies"`
-		Images      int    `json:"images"`
-		UniqueIps   int    `json:"unique_ips"`
+		No  int    `json:"no"`
+		Com string `json:"com"`
 	} `json:"posts"`
+}
+
+// Reddit API thread structure
+// https://www.reddit.com/dev/api
+type RedditComment []struct {
+	Data struct {
+		Children []struct {
+			Kind string `json:"kind"`
+			Data struct {
+				Body string `json:"body"`
+			} `json:"data"`
+		} `json:"children"`
+	} `json:"data"`
 }
 
 // Used to parse youtube's ISO 8601 durations
@@ -130,7 +123,7 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 
 	finalURL := response.Request.URL.Host
 
-	var bytes int64 = 20480
+	var bytes int64 = 40960
 	// Youtube's html buries the duration at the bottom
 	// so we have to read the first 100kB
 	if finalURL == "www.youtube.com" {
@@ -195,7 +188,7 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 				defer response.Body.Close()
 				body, _ := ioutil.ReadAll(response.Body)
 
-				var posts Thread
+				var posts ChanPost
 				json.Unmarshal(body, &posts)
 
 				title = posts.Posts[0].Com
@@ -218,12 +211,39 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 		}
 	}
 
+	if finalURL == "www.reddit.com" {
+		thread_title := title
+		if strings.Contains(response.Request.URL.Path, "/comments/") {
+
+			response, _ := client.Get(fmt.Sprintf("%s.json", URL))
+
+			if response.StatusCode != 200 {
+				fmt.Println(response.StatusCode)
+				title = "404 Not Found"
+			} else {
+
+				defer response.Body.Close()
+
+				body, _ := ioutil.ReadAll(response.Body)
+				var comments RedditComment
+				json.Unmarshal(body, &comments)
+
+				children := comments[len(comments)-1].Data.Children
+				title = children[len(children)-1].Data.Body
+
+				if len(title) < 1 {
+					title = thread_title
+				}
+			}
+		}
+	}
+
 	reg := regexp.MustCompile("\\s+")
 	title = reg.ReplaceAllString(title, " ") // Strip tabs and newlines
 	title = strings.TrimSpace(title)         // then trim excessive spaces
 
 	if len(title) > 200 {
-		title = title[0:200]
+		title = fmt.Sprintf("%s …", title[0:200])
 	} else if len(title) < 1 {
 		title = "(no title)"
 	}
