@@ -3,6 +3,7 @@ package wolfram
 import (
 	"fmt"
 	"github.com/0x263b/Porygon2"
+	"github.com/0x263b/Porygon2/web"
 	"gopkg.in/xmlpath.v2"
 	"net/http"
 	"net/url"
@@ -39,6 +40,8 @@ func wolfram(command *bot.Cmd, matches []string) (msg string, err error) {
 		return "Wolfram | Stephen Wolfram doesn't know the answer to this", nil
 	}
 
+	short := web.ShortenURL(fmt.Sprintf("https://www.wolframalpha.com/input/?i=%s", url.QueryEscape(matches[1])))
+
 	success := xmlpath.MustCompile("//queryresult/@success")
 	input := xmlpath.MustCompile("//pod[@position='100']//plaintext[1]")
 	output := xmlpath.MustCompile("//pod[@position='200']/subpod[1]/plaintext[1]")
@@ -46,7 +49,7 @@ func wolfram(command *bot.Cmd, matches []string) (msg string, err error) {
 	suc, _ := success.String(root)
 
 	if suc != "true" {
-		return "Wolfram | Stephen Wolfram doesn't know the answer to this", nil
+		return fmt.Sprintf("Wolfram | Stephen Wolfram doesn't know the answer to this | %s", short), nil
 	}
 
 	in, _ := input.String(root)
@@ -62,7 +65,7 @@ func wolfram(command *bot.Cmd, matches []string) (msg string, err error) {
 	in, _ = strconv.Unquote(`"` + in + `"`)
 	out, _ = strconv.Unquote(`"` + out + `"`)
 
-	return fmt.Sprintf("Wolfram | %s >>> %s", in, out), nil
+	return fmt.Sprintf("Wolfram | %s >>> %s | %s", in, out, short), nil
 }
 
 func init() {
