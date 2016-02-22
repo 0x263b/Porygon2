@@ -143,6 +143,7 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 		return fmt.Sprintf("File | %s %s | %s", contentType, humanize.Bytes(size), finalURL), nil
 	}
 
+	defer response.Body.Close()
 	body := response.Body
 	chunk := io.LimitReader(body, bytes) // Download/Read first 20kB
 
