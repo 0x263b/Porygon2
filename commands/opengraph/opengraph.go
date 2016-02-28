@@ -230,7 +230,10 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 				json.Unmarshal(body, &comments)
 
 				children := comments[len(comments)-1].Data.Children
-				title = children[len(children)-1].Data.Body
+
+				if len(children) > 0 {
+					title = children[len(children)-1].Data.Body
+				}
 
 				if len(title) < 1 {
 					title = thread_title
