@@ -88,6 +88,7 @@ exec /path/to/porygon2
 
 #### APIs
 
+* [Bing](https://datamarket.azure.com/dataset/bing/search): [commands/bing](commands/bing/images.go)
 * [Giphy](https://github.com/Giphy/GiphyAPI): [commands/giphy](commands/giphy/giphy.go)
 * [Google Geocode](https://developers.google.com/maps/documentation/geocoding/intro): [commands/weather](commands/weather/weather.go)
 * [Last.fm](http://www.last.fm/api): [commands/lastfm](commands/lastfm/)
