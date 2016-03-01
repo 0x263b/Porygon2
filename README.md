@@ -19,6 +19,7 @@ import (
 	"github.com/0x263b/Porygon2"
 	_ "github.com/0x263b/Porygon2/commands/8ball"
 	_ "github.com/0x263b/Porygon2/commands/admin"
+	_ "github.com/0x263b/Porygon2/commands/bing"
 	_ "github.com/0x263b/Porygon2/commands/choose"
 	_ "github.com/0x263b/Porygon2/commands/google"
 	_ "github.com/0x263b/Porygon2/commands/lastfm"
@@ -102,6 +103,7 @@ exec /path/to/porygon2
 
 * [8ball](#8ball)
 * [Google](#google)
+* [Bing](#bing)
 * [Lastfm](#lastfm)
 * [Random](#random)
 * [Translate](#translate)
@@ -126,17 +128,20 @@ Gives and 8ball style answer to a *question*
 
 
 ### Google
-Gets the first result from [Google](https://www.google.com/)/[Google Images](https://images.google.com/) for *search query*
+Gets the first result from [Google](https://www.google.com/) for *search query*
 
 **-g/-google** *search query*
 
 	-google Richard Stallman
 	Google | Richard Stallman's Personal Page | http://stallman.org/
 
+### Bing
+Gets the first result from [Bing image search](https://www.bing.com/images) for *search query*
+
 **-img** *search query*
 
 	-img Richard Stallman
-	Google | Richard Stallman | https://upload.wikimedia.org/wikipedia/commons/7/7b/Richard_Stallman_-_F%C3%AAte_de_l'Humanit%C3%A9_2014_-_010.jpg
+	Bing | Richard Stallman | https://upload.wikimedia.org/wikipedia/commons/7/7b/Richard_Stallman_-_F%C3%AAte_de_l'Humanit%C3%A9_2014_-_010.jpg
 
 
 ### Last.fm
