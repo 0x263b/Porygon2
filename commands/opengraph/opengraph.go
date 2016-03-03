@@ -214,7 +214,9 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 
 	if finalURL == "www.reddit.com" {
 		thread_title := title
-		if strings.Contains(response.Request.URL.Path, "/comments/") {
+		r := regexp.MustCompile(`\/r\/\w+\/comments\/\w+\/\w+\/\w+`)
+
+		if r.MatchString(response.Request.URL.Path) {
 
 			response, _ := client.Get(fmt.Sprintf("%s.json", URL))
 
