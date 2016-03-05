@@ -142,7 +142,7 @@ Gets the first result from [Bing image search](https://www.bing.com/images) for 
 **-img** *search query*
 
 	-img Richard Stallman
-	Bing | Richard Stallman | https://upload.wikimedia.org/wikipedia/commons/7/7b/Richard_Stallman_-_F%C3%AAte_de_l'Humanit%C3%A9_2014_-_010.jpg
+	Bing | Richard Stallman → image/jpeg 257 kB | http://www.straferight.com/photopost/data/500/richard-stallman.jpg
 
 
 ### Last.fm

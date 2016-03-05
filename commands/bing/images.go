@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/0x263b/Porygon2"
+	"github.com/dustin/go-humanize"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 const (
@@ -44,7 +46,13 @@ func image(command *bot.Cmd, matches []string) (msg string, err error) {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	output := fmt.Sprintf("Bing | %s | %s", matches[1], results.D.Results[0].MediaURL)
+	size, _ := strconv.ParseUint(results.D.Results[0].FileSize, 10, 64)
+	humanize.Bytes(size)
+
+	output := fmt.Sprintf("Bing | %s → %s %s | %s", matches[1],
+		results.D.Results[0].ContentType,
+		humanize.Bytes(size),
+		results.D.Results[0].MediaURL)
 	return output, nil
 }
 
