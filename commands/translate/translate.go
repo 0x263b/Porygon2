@@ -1,9 +1,7 @@
 package translate
 
 import (
-	"bytes"
 	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	"github.com/0x263b/Porygon2"
 	"io/ioutil"
@@ -12,40 +10,19 @@ import (
 )
 
 const (
-	authURL      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13"
-	translateURL = "https://api.microsofttranslator.com/v2/Http.svc/Translate"
+	translateURL = "https://api.datamarket.azure.com/Bing/MicrosoftTranslator/v1/Translate?Text='%s'&To='%s'&From='%s'&$format=json"
 )
 
-type Authorization struct {
-	TokenType   string `json:"token_type"`
-	AccessToken string `json:"access_token"`
-	ExpiresIn   string `json:"expires_in"`
-	Scope       string `json:"scope"`
-}
-
-type String struct {
-	Translation string `xml:",chardata"`
-	Namespace   string `xml:"xmlns,attr"`
-}
-
-func auth() string {
-	parameters := url.Values{}
-	parameters.Add("grant_type", "client_credentials")
-	parameters.Add("client_id", bot.Config.API.TranslateClient)
-	parameters.Add("client_secret", bot.Config.API.TranslateSecret)
-	parameters.Add("scope", "http://api.microsofttranslator.com")
-
-	client := &http.Client{}
-	request, _ := http.NewRequest("POST", authURL, bytes.NewBufferString(parameters.Encode()))
-	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-	response, _ := client.Do(request)
-	defer response.Body.Close()
-	body, _ := ioutil.ReadAll(response.Body)
-
-	var token Authorization
-	json.Unmarshal(body, &token)
-	return token.AccessToken
+type Translation struct {
+	D struct {
+		Results []struct {
+			Metadata struct {
+				URI  string `json:"uri"`
+				Type string `json:"type"`
+			} `json:"__metadata"`
+			Text string `json:"Text"`
+		} `json:"results"`
+	} `json:"d"`
 }
 
 func translate(command *bot.Cmd, matches []string) (msg string, err error) {
@@ -63,32 +40,26 @@ func translate(command *bot.Cmd, matches []string) (msg string, err error) {
 		to = "zh-CHT"
 	}
 
-	transURL, _ := url.Parse(translateURL)
-	parameters := url.Values{}
-	parameters.Add("from", from)
-	parameters.Add("to", to)
-	parameters.Add("text", matches[3])
-	transURL.RawQuery = parameters.Encode()
-
-	token := auth()
-
-	authorizationHeader := fmt.Sprintf("Bearer %s", token)
-
 	client := &http.Client{}
-	request, _ := http.NewRequest("GET", transURL.String(), nil)
-	request.Header.Add("Authorization", authorizationHeader)
+	request, _ := http.NewRequest("GET", fmt.Sprintf(translateURL, url.QueryEscape(matches[3]), to, from), nil)
+	request.SetBasicAuth(bot.Config.TranslateClient, bot.Config.TranslateSecret)
 
 	response, _ := client.Do(request)
 	defer response.Body.Close()
 	body, _ := ioutil.ReadAll(response.Body)
 
-	var dict String
-	xml.Unmarshal(body, &dict)
+	var translation Translation
+	json.Unmarshal(body, &translation)
 
-	if dict.Translation == "" {
+	if err != nil {
 		return fmt.Sprintf("Translate | %s >> %s | Could not get translation", from, to), nil
 	}
-	return fmt.Sprintf("Translate | %s >> %s | %s", from, to, dict.Translation), nil
+
+	if len(translation.D.Results) == 0 {
+		return fmt.Sprintf("Translate | %s >> %s | Could not get translation", from, to), nil
+	}
+
+	return fmt.Sprintf("Translate | %s >> %s | %s", from, to, translation.D.Results[0].Text), nil
 }
 
 func init() {
