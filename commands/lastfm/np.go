@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"github.com/0x263b/Porygon2"
 	"github.com/0x263b/Porygon2/web"
+	"net/url"
 	"strings"
 )
 
 const (
 	NowPlayingURL = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=%s&limit=1&api_key=%s&format=json"
-	ArtistTagsURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid=%s&api_key=%s&format=json"
+	ArtistTagsURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&artist=%s&api_key=%s&format=json"
 )
 
 func nowPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
@@ -34,21 +35,22 @@ func nowPlaying(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	var fmttags string
-	if len(data.Recenttracks.Track[0].Artist.Mbid) > 10 {
-		tags := &ArtistTags{}
-		err = web.GetJSON(fmt.Sprintf(ArtistTagsURL, data.Recenttracks.Track[0].Artist.Mbid, bot.Config.API.Lastfm), tags)
-		if err != nil {
-			return fmt.Sprintf("Could not get scrobbles for %s", username), nil
-		}
-
-		if len(tags.Toptags.Tag) > 4 {
-			for i := range tags.Toptags.Tag[:4] {
-				fmttags += fmt.Sprintf("%s, ", tags.Toptags.Tag[i].Name)
-			}
-		}
-
-		fmttags = strings.TrimSuffix(fmttags, ", ")
+	tags := &ArtistTags{}
+	err = web.GetJSON(fmt.Sprintf(ArtistTagsURL, url.QueryEscape(data.Recenttracks.Track[0].Artist.Text), bot.Config.API.Lastfm), tags)
+	if err != nil {
+		return fmt.Sprintf("Could not get scrobbles for %s", username), nil
 	}
+
+	var trunc int = 4
+	if len(tags.Toptags.Tag) < trunc {
+		trunc = len(tags.Toptags.Tag)
+	}
+
+	for i := range tags.Toptags.Tag[:trunc] {
+		fmttags += fmt.Sprintf("%s, ", tags.Toptags.Tag[i].Name)
+	}
+
+	fmttags = strings.TrimSuffix(fmttags, ", ")
 
 	state := "last played"
 	if data.Recenttracks.Track[0].Attr.Nowplaying == "true" {
