@@ -14,20 +14,12 @@ const (
 )
 
 type DefinitionResults struct {
-	Tags       []string `json:"tags"`
-	ResultType string   `json:"result_type"`
+	ResultType string `json:"result_type"`
 	List       []struct {
-		Defid       int    `json:"defid"`
-		Word        string `json:"word"`
-		Author      string `json:"author"`
-		Permalink   string `json:"permalink"`
-		Definition  string `json:"definition"`
-		Example     string `json:"example"`
-		ThumbsUp    int    `json:"thumbs_up"`
-		ThumbsDown  int    `json:"thumbs_down"`
-		CurrentVote string `json:"current_vote"`
+		Word       string `json:"word"`
+		Permalink  string `json:"permalink"`
+		Definition string `json:"definition"`
 	} `json:"list"`
-	Sounds []interface{} `json:"sounds"`
 }
 
 func urban(command *bot.Cmd, matches []string) (msg string, err error) {

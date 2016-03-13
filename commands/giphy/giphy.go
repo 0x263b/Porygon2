@@ -15,64 +15,15 @@ const (
 
 type giphy struct {
 	Data []struct {
-		BitlyUrl string `json:"bitly_url"`
-		Images   struct {
+		Images struct {
 			FixedHeight struct {
-				Height string `json:"height"`
-				Url    string `json:"url"`
-				Width  string `json:"width"`
+				Url string `json:"url"`
 			} `json:"fixed_height"`
-			FixedHeightDownsampled struct {
-				Height string `json:"height"`
-				Url    string `json:"url"`
-				Width  string `json:"width"`
-			} `json:"fixed_height_downsampled"`
-			FixedHeightStill struct {
-				Height string `json:"height"`
-				Url    string `json:"url"`
-				Width  string `json:"width"`
-			} `json:"fixed_height_still"`
-			FixedWidth struct {
-				Height string `json:"height"`
-				Url    string `json:"url"`
-				Width  string `json:"width"`
-			} `json:"fixed_width"`
-			FixedWidthDownsampled struct {
-				Height string `json:"height"`
-				Url    string `json:"url"`
-				Width  string `json:"width"`
-			} `json:"fixed_width_downsampled"`
-			FixedWidthStill struct {
-				Height string `json:"height"`
-				Url    string `json:"url"`
-				Width  string `json:"width"`
-			} `json:"fixed_width_still"`
 			Original struct {
-				Frames string `json:"frames"`
-				Height string `json:"height"`
-				Size   string `json:"size"`
-				Url    string `json:"url"`
-				Width  string `json:"width"`
+				Url string `json:"url"`
 			} `json:"original"`
 		} `json:"images"`
-		Type        string `json:"type"`
-		Username    string `json:"username"`
-		BitlyGifUrl string `json:"bitly_gif_url"`
-		EmbedUrl    string `json:"embed_url"`
-		Id          string `json:"id"`
-		Rating      string `json:"rating"`
-		Source      string `json:"source"`
-		Url         string `json:"url"`
 	} `json:"data"`
-	Meta struct {
-		Msg    string `json:"msg"`
-		Status int64  `json:"status"`
-	} `json:"meta"`
-	Pagination struct {
-		Count      int64 `json:"count"`
-		Offset     int64 `json:"offset"`
-		TotalCount int64 `json:"total_count"`
-	} `json:"pagination"`
 }
 
 func gif(command *bot.Cmd, matches []string) (msg string, err error) {

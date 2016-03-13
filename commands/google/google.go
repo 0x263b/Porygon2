@@ -15,29 +15,11 @@ const (
 type SearchResults struct {
 	Responsedata struct {
 		Results []struct {
-			Gsearchresultclass string `json:"GsearchResultClass"`
-			Unescapedurl       string `json:"unescapedUrl"`
-			URL                string `json:"url"`
-			Visibleurl         string `json:"visibleUrl"`
-			Cacheurl           string `json:"cacheUrl"`
-			Title              string `json:"title"`
-			Titlenoformatting  string `json:"titleNoFormatting"`
-			Content            string `json:"content"`
+			URL               string `json:"url"`
+			Title             string `json:"title"`
+			Titlenoformatting string `json:"titleNoFormatting"`
 		} `json:"results"`
-		Cursor struct {
-			Resultcount string `json:"resultCount"`
-			Pages       []struct {
-				Start string `json:"start"`
-				Label int    `json:"label"`
-			} `json:"pages"`
-			Estimatedresultcount string `json:"estimatedResultCount"`
-			Currentpageindex     int    `json:"currentPageIndex"`
-			Moreresultsurl       string `json:"moreResultsUrl"`
-			Searchresulttime     string `json:"searchResultTime"`
-		} `json:"cursor"`
 	} `json:"responseData"`
-	Responsedetails interface{} `json:"responseDetails"`
-	Responsestatus  int         `json:"responseStatus"`
 }
 
 func google(command *bot.Cmd, matches []string) (msg string, err error) {
