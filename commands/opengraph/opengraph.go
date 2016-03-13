@@ -149,7 +149,6 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 
 	doc, err := goquery.NewDocumentFromReader(chunk)
 	if err != nil {
-		fmt.Println(err)
 		return "", err
 	}
 
@@ -221,7 +220,6 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 			response, _ := client.Get(fmt.Sprintf("%s.json", URL))
 
 			if response.StatusCode != 200 {
-				fmt.Println(response.StatusCode)
 				title = "404 Not Found"
 			} else {
 
