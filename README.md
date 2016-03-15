@@ -108,6 +108,7 @@ exec /path/to/porygon2
 * [Lastfm](#lastfm)
 * [Random](#random)
 * [Translate](#translate)
+* [TVMaze](#tvmaze)
 * [Twitter](#twitter)
 * [Urban Dictionary](#urban-dictionary)
 * [URL Parser](#url-parser)
@@ -204,6 +205,16 @@ Translates *text* using [Bing translate](http://www.bing.com/translator) and pro
 | fr   | French					| ms   | Malay				| ur   | Urdu
 | de   | German					| mt   | Maltese			| vi   | Vietnamese
 | el   | Greek					| no   | Norwegian
+
+
+### TVMaze
+Info for *tv show* with episode airtime if available **-tv** *tv show*
+
+	-tv Better call saul
+	TVmaze | Better Call Saul | Airtime: Monday 22:00 on AMC | Status: Running | Next Ep: S2E6 at 22:00 2016-03-21
+	
+	-tv Mr Robot
+	TVmaze | Mr. Robot | Airtime: Wednesday 22:00 on USA Network | Status: Running
 
 
 ### Twitter
