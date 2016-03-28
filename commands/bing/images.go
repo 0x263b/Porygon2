@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	imageURL = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Query='%s'&$format=json"
+	imageURL = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Query='%s'&Adult='Off'&$format=json"
 )
 
 type ImageResults struct {
