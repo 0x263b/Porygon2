@@ -217,10 +217,11 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 
 		if r.MatchString(response.Request.URL.Path) {
 
-			response, _ := client.Get(fmt.Sprintf("%s.json", URL))
+			response, _ := client.Get(fmt.Sprintf("https://www.reddit.com%s.json", response.Request.URL.Path))
 
 			if response.StatusCode != 200 {
-				title = "404 Not Found"
+				fmt.Println(response.StatusCode)
+				title = "Reddit is under heavy load"
 			} else {
 
 				defer response.Body.Close()
