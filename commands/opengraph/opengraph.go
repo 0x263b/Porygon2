@@ -162,7 +162,9 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	// Get tweet content from <meta>
 	if finalURL == "twitter.com" {
 		doc.Find("meta[property='og:description']").Each(func(i int, s *goquery.Selection) {
-			title = fmt.Sprintf("%s: %s", title, s.AttrOr("content", title))
+			reg := regexp.MustCompile("[“”]")
+			tweet := reg.ReplaceAllString(s.AttrOr("content", title), "") // Strip quotes
+			title = fmt.Sprintf("%s: %s", title, tweet)
 		})
 	}
 
