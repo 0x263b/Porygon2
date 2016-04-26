@@ -124,6 +124,7 @@ func connect() {
 		ServerName:         getServerName(),
 		InsecureSkipVerify: true,
 	}
+	Conn.Version = "Porygon2 → https://github.com/0x263b/Porygon2"
 	Conn.VerboseCallbackHandler = Config.Debug
 	err := Conn.Connect(Config.Server)
 	if err != nil {
@@ -146,7 +147,7 @@ func onEndOfMotd(e *irc.Event) {
 }
 
 func GetNames(channel string) []string {
-	Conn.SendRaw(fmt.Sprintf("NAMES %v", channel))
+	Conn.SendRawf("NAMES %v", channel)
 	return ChannelNicks[channel]
 }
 
@@ -161,11 +162,6 @@ func onNames(e *irc.Event) {
 	uniq := removeDuplicates(append(old, nu...))
 
 	ChannelNicks[strings.ToLower(e.Arguments[2])] = uniq
-	log.Printf("Names: %v", uniq)
-}
-
-func onEndOfNames(e *irc.Event) {
-	log.Printf("End of Names: %v", e.Arguments)
 }
 
 func onKick(e *irc.Event) {
@@ -177,7 +173,6 @@ func onKick(e *irc.Event) {
 
 func ConfigureEvents() {
 	Conn.AddCallback("376", onEndOfMotd)
-	Conn.AddCallback("366", onEndOfNames)
 	Conn.AddCallback("353", onNames)
 	Conn.AddCallback("KICK", onKick)
 	Conn.AddCallback("PRIVMSG", onPRIVMSG)

@@ -5,10 +5,10 @@ An IRC Bot written in Go
 ### Install
 ```
 # Dependencies
-go get github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/PuerkitoBio/goquery github.com/dustin/go-humanize github.com/kennygrant/sanitize gopkg.in/xmlpath.v2 github.com/kennygrant/sanitize github.com/kurrik/oauth1a github.com/kurrik/twittergo
+go get -u github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/PuerkitoBio/goquery github.com/dustin/go-humanize github.com/kennygrant/sanitize gopkg.in/xmlpath.v2 github.com/kurrik/oauth1a github.com/kurrik/twittergo
 
 # Porygon2
-go get github.com/0x263b/Porygon2
+go get -u github.com/0x263b/Porygon2
 ```
 
 ### Example
