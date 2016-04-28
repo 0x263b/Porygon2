@@ -116,7 +116,14 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 		Transport: transport, // Time out if connection hangs
 	}
 
-	response, err := client.Get(URL)
+	request, err := http.NewRequest("GET", URL, nil)
+	if err != nil {
+		return "", err
+	}
+
+	request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0")
+
+	response, err := client.Do(request)
 	if err != nil {
 		return "", err
 	}
