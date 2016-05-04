@@ -2,7 +2,6 @@ package google
 
 import (
 	"github.com/0x263b/Porygon2"
-	"github.com/0x263b/Porygon2/web"
 )
 
 func google(command *bot.Cmd, matches []string) (msg string, err error) {
