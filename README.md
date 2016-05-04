@@ -21,7 +21,6 @@ import (
 	_ "github.com/0x263b/Porygon2/commands/admin"
 	_ "github.com/0x263b/Porygon2/commands/bing"
 	_ "github.com/0x263b/Porygon2/commands/choose"
-	_ "github.com/0x263b/Porygon2/commands/google"
 	_ "github.com/0x263b/Porygon2/commands/lastfm"
 	_ "github.com/0x263b/Porygon2/commands/opengraph"
 	_ "github.com/0x263b/Porygon2/commands/translate"
@@ -103,7 +102,6 @@ exec /path/to/porygon2
 ### Functions
 
 * [8ball](#8ball)
-* [Google](#google)
 * [Bing](#bing)
 * [Lastfm](#lastfm)
 * [Random](#random)
@@ -129,15 +127,14 @@ Gives and 8ball style answer to a *question*
 	My sources say no
 
 
-### Google
-Gets the first result from [Google](https://www.google.com/) for *search query*
-
-**-g/-google** *search query*
-
-	-google Richard Stallman
-	Google | Richard Stallman's Personal Page | http://stallman.org/
-
 ### Bing
+Gets the first result from [Bing](https://www.bing.com/) for *search query*
+
+**-b/-bing** *search query*
+
+	-bing Richard Stallman
+	Bing | Richard Stallman's Personal Page | http://stallman.org/
+
 Gets the first result from [Bing image search](https://www.bing.com/images) for *search query*
 
 **-img** *search query*
