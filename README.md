@@ -8,7 +8,7 @@ An IRC Bot written in Go
 go get -u github.com/thoj/go-ircevent github.com/steveyen/gkvlite github.com/PuerkitoBio/goquery github.com/dustin/go-humanize github.com/kennygrant/sanitize gopkg.in/xmlpath.v2 github.com/kurrik/oauth1a github.com/kurrik/twittergo
 
 # Porygon2
-go get -u github.com/0x263b/Porygon2
+go get -u github.com/0x263b/porygon2
 ```
 
 ### Example
@@ -16,19 +16,19 @@ go get -u github.com/0x263b/Porygon2
 package main
 
 import (
-	"github.com/0x263b/Porygon2"
-	_ "github.com/0x263b/Porygon2/commands/8ball"
-	_ "github.com/0x263b/Porygon2/commands/admin"
-	_ "github.com/0x263b/Porygon2/commands/bing"
-	_ "github.com/0x263b/Porygon2/commands/choose"
-	_ "github.com/0x263b/Porygon2/commands/lastfm"
-	_ "github.com/0x263b/Porygon2/commands/opengraph"
-	_ "github.com/0x263b/Porygon2/commands/translate"
-	_ "github.com/0x263b/Porygon2/commands/twitter"
-	_ "github.com/0x263b/Porygon2/commands/urbandictionary"
-	_ "github.com/0x263b/Porygon2/commands/weather"
-	_ "github.com/0x263b/Porygon2/commands/wolfram"
-	_ "github.com/0x263b/Porygon2/commands/youtube"
+	"github.com/0x263b/porygon2"
+	_ "github.com/0x263b/porygon2/commands/8ball"
+	_ "github.com/0x263b/porygon2/commands/admin"
+	_ "github.com/0x263b/porygon2/commands/bing"
+	_ "github.com/0x263b/porygon2/commands/choose"
+	_ "github.com/0x263b/porygon2/commands/lastfm"
+	_ "github.com/0x263b/porygon2/commands/opengraph"
+	_ "github.com/0x263b/porygon2/commands/translate"
+	_ "github.com/0x263b/porygon2/commands/twitter"
+	_ "github.com/0x263b/porygon2/commands/urbandictionary"
+	_ "github.com/0x263b/porygon2/commands/weather"
+	_ "github.com/0x263b/porygon2/commands/wolfram"
+	_ "github.com/0x263b/porygon2/commands/youtube"
 )
 
 func main() {

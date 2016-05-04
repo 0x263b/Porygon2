@@ -2,8 +2,8 @@ package lastfm
 
 import (
 	"fmt"
-	"github.com/0x263b/Porygon2"
-	"github.com/0x263b/Porygon2/web"
+	"github.com/0x263b/porygon2"
+	"github.com/0x263b/porygon2/web"
 	"strings"
 )
 

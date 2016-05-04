@@ -3,7 +3,7 @@ package url
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/0x263b/Porygon2"
+	"github.com/0x263b/porygon2"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/dustin/go-humanize"
 	"github.com/kennygrant/sanitize"

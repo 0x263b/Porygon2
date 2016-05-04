@@ -2,7 +2,7 @@ package choose
 
 import (
 	"fmt"
-	"github.com/0x263b/Porygon2"
+	"github.com/0x263b/porygon2"
 	"math/rand"
 	"strings"
 	"time"
