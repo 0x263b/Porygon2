@@ -121,6 +121,7 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 		return "", err
 	}
 
+	request.Header.Set("Accept-Language", "en-US")
 	request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0")
 
 	response, err := client.Do(request)
