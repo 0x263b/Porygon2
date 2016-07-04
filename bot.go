@@ -43,6 +43,7 @@ type API struct {
 	Wolfram               string
 	Youtube               string
 	Geocode               string
+	Bing                  string
 }
 
 type ircConnection interface {

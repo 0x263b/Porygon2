@@ -10,30 +10,26 @@ import (
 )
 
 const (
-	searchURL = "https://api.datamarket.azure.com/Bing/Search/v1/Web?Query='%s'&Options='DisableLocationDetection'&Market='en-US'&$format=json"
+	searchURL = "https://api.cognitive.microsoft.com/bing/v5.0/search?q=%s&count=1&mkt=en-us&responseFilter=Webpages"
 )
 
 type SearchResults struct {
-	D struct {
-		Results []struct {
-			Metadata struct {
-				URI  string `json:"uri"`
-				Type string `json:"type"`
-			} `json:"__metadata"`
-			ID          string `json:"ID"`
-			Title       string `json:"Title"`
-			Description string `json:"Description"`
-			DisplayURL  string `json:"DisplayUrl"`
-			URL         string `json:"Url"`
-		} `json:"results"`
-		Next string `json:"__next"`
-	} `json:"d"`
+	WebPages *struct {
+		Value []struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"value"`
+	} `json:"webPages"`
+	Error struct {
+		StatusCode int    `json:"statusCode"`
+		Message    string `json:"message"`
+	} `json:"error"`
 }
 
 func bing(command *bot.Cmd, matches []string) (msg string, err error) {
 	client := &http.Client{}
 	request, _ := http.NewRequest("GET", fmt.Sprintf(searchURL, url.QueryEscape(matches[1])), nil)
-	request.SetBasicAuth(bot.Config.TranslateClient, bot.Config.TranslateSecret)
+	request.Header.Set("Ocp-Apim-Subscription-Key", bot.Config.Bing)
 
 	response, _ := client.Do(request)
 	defer response.Body.Close()
@@ -46,13 +42,20 @@ func bing(command *bot.Cmd, matches []string) (msg string, err error) {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	if len(results.D.Results) == 0 {
+	if results.WebPages == nil {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	output := fmt.Sprintf("Bing | %s | %s ",
-		results.D.Results[0].Title,
-		results.D.Results[0].URL)
+	title := results.WebPages.Value[0].Name
+	pageURL := results.WebPages.Value[0].URL
+
+	transport := http.Transport{}
+
+	request, _ = http.NewRequest("HEAD", pageURL, nil)
+	response, _ = transport.RoundTrip(request)
+	pageURL = response.Header.Get("Location")
+
+	output := fmt.Sprintf("Bing | %s | %s ", title, pageURL)
 	return output, nil
 }
 

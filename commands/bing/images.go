@@ -4,32 +4,27 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/0x263b/porygon2"
-	"github.com/dustin/go-humanize"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strconv"
 )
 
 const (
-	imageURL = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Query='%s'&Adult='Off'&$format=json"
+	imageURL = "https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=%s&count=1&mkt=en-us&safeSearch=Off"
 )
 
 type ImageResults struct {
-	D struct {
-		Results []struct {
-			MediaURL    string `json:"MediaUrl"`
-			FileSize    string `json:"FileSize"`
-			ContentType string `json:"ContentType"`
-		} `json:"results"`
-		Next string `json:"__next"`
-	} `json:"d"`
+	Value []struct {
+		ContentURL     string `json:"contentUrl"`
+		ContentSize    string `json:"contentSize"`
+		EncodingFormat string `json:"encodingFormat"`
+	} `json:"value"`
 }
 
 func image(command *bot.Cmd, matches []string) (msg string, err error) {
 	client := &http.Client{}
 	request, _ := http.NewRequest("GET", fmt.Sprintf(imageURL, url.QueryEscape(matches[1])), nil)
-	request.SetBasicAuth(bot.Config.TranslateClient, bot.Config.TranslateSecret)
+	request.Header.Set("Ocp-Apim-Subscription-Key", bot.Config.Bing)
 
 	response, _ := client.Do(request)
 	defer response.Body.Close()
@@ -42,17 +37,11 @@ func image(command *bot.Cmd, matches []string) (msg string, err error) {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	if len(results.D.Results) == 0 {
+	if len(results.Value) == 0 {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	size, _ := strconv.ParseUint(results.D.Results[0].FileSize, 10, 64)
-	humanize.Bytes(size)
-
-	output := fmt.Sprintf("Bing | %s → %s %s | %s", matches[1],
-		results.D.Results[0].ContentType,
-		humanize.Bytes(size),
-		results.D.Results[0].MediaURL)
+	output := fmt.Sprintf("Bing | %s | %s", matches[1], results.Value[0].ContentURL)
 	return output, nil
 }
 
