@@ -29,6 +29,19 @@ type ChanPost struct {
 	} `json:"posts"`
 }
 
+// Reddit API thread structure
+// https://www.reddit.com/dev/api
+type RedditComment []struct {
+	Data struct {
+		Children []struct {
+			Kind string `json:"kind"`
+			Data struct {
+				Body string `json:"body"`
+			} `json:"data"`
+		} `json:"children"`
+	} `json:"data"`
+}
+
 // Used to parse youtube's ISO 8601 durations
 // https://en.wikipedia.org/wiki/ISO_8601#Durations
 func ParseDuration(str string) time.Duration {
@@ -109,7 +122,7 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	}
 
 	request.Header.Set("Accept-Language", "en-US")
-	request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0")
+	request.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0")
 
 	response, err := client.Do(request)
 	if err != nil {
@@ -204,6 +217,41 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 
 			if len(title) < 1 {
 				title = "(blank post)"
+			}
+		}
+	}
+
+	if finalURL == "www.reddit.com" {
+		thread_title := title
+		r := regexp.MustCompile(`\/r\/\w+\/comments\/\w+\/\w+\/\w+`)
+
+		if r.MatchString(response.Request.URL.Path) {
+
+			request, _ := http.NewRequest("GET", fmt.Sprintf("https://www.reddit.com%s.json", response.Request.URL.Path), nil)
+
+			request.Header.Set("Accept-Language", "en-US")
+			request.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0")
+
+			response, _ := client.Do(request)
+
+			if response.StatusCode != 200 {
+				title = ""
+			} else {
+
+				defer response.Body.Close()
+
+				body, _ := ioutil.ReadAll(response.Body)
+				var comments RedditComment
+				json.Unmarshal(body, &comments)
+
+				children := comments[len(comments)-1].Data.Children
+
+				if len(children) > 0 {
+					title = children[len(children)-1].Data.Body
+				}
+			}
+			if len(title) < 1 {
+				title = thread_title
 			}
 		}
 	}
