@@ -37,7 +37,7 @@ func GetJSON(url string, v interface{}) error {
 
 func ShortenURL(url string) string {
 	client := &http.Client{}
-	request, _ := http.NewRequest("POST", "http://mnn.im/s", bytes.NewBufferString(url))
+	request, _ := http.NewRequest("POST", "https://mnn.im/s", bytes.NewBufferString(url))
 	response, _ := client.Do(request)
 	defer response.Body.Close()
 	body, _ := ioutil.ReadAll(response.Body)
