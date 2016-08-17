@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	helpURL = "https://github.com/0x263b/porygon2#functions"
+	helpURL = "https://github.com/0x263b/Porygon2/blob/master/USAGE.md"
 )
 
 func help(command *bot.Cmd, matches []string) (msg string, err error) {

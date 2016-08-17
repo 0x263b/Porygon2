@@ -25,7 +25,7 @@ func forecast(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	data := &Forecast{}
-	err = web.GetJSON(fmt.Sprintf(DarkSkyURL, bot.Config.API.Weather, coords), data)
+	err = web.GetJSON(fmt.Sprintf(DarkSkyURL, bot.Config.Weather, coords), data)
 	if err != nil {
 		return fmt.Sprintf("Could not get weather for: %s", location), nil
 	}

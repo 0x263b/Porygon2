@@ -13,8 +13,8 @@ import (
 
 func LoadCredentials() (client *twittergo.Client, err error) {
 	config := &oauth1a.ClientConfig{
-		ConsumerKey:    bot.Config.API.TwitterConsumerKey,
-		ConsumerSecret: bot.Config.API.TwitterConsumerSecret,
+		ConsumerKey:    bot.Config.TwitterConsumerKey,
+		ConsumerSecret: bot.Config.TwitterConsumerSecret,
 	}
 	client = twittergo.NewClient(config, nil)
 	return

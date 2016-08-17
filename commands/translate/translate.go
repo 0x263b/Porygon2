@@ -42,7 +42,7 @@ func translate(command *bot.Cmd, matches []string) (msg string, err error) {
 
 	client := &http.Client{}
 	request, _ := http.NewRequest("GET", fmt.Sprintf(translateURL, url.QueryEscape(matches[3]), to, from), nil)
-	request.SetBasicAuth(bot.Config.TranslateClient, bot.Config.TranslateSecret)
+	request.SetBasicAuth(bot.Config.Nick, bot.Config.Translate)
 
 	response, _ := client.Do(request)
 	defer response.Body.Close()

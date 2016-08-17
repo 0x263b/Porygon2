@@ -16,7 +16,7 @@ func checkLocation(senderNick string) (location string, coords string) {
 
 func setLocation(command *bot.Cmd, matches []string) (msg string, err error) {
 	geo := &Geocode{}
-	err = web.GetJSON(fmt.Sprintf(GeocodeURL, url.QueryEscape(strings.TrimSpace(matches[1])), bot.Config.API.Geocode), geo)
+	err = web.GetJSON(fmt.Sprintf(GeocodeURL, url.QueryEscape(strings.TrimSpace(matches[1])), bot.Config.Geocode), geo)
 	if err != nil {
 		return fmt.Sprintf("Could not find %s", strings.TrimSpace(matches[1])), nil
 	}

@@ -46,7 +46,7 @@ func Round(f float64) float64 {
 func getCoords(location string) string {
 	var err error
 	geo := &Geocode{}
-	err = web.GetJSON(fmt.Sprintf(GeocodeURL, url.QueryEscape(location), bot.Config.API.Geocode), geo)
+	err = web.GetJSON(fmt.Sprintf(GeocodeURL, url.QueryEscape(location), bot.Config.Geocode), geo)
 	if err != nil || geo.Status != "OK" {
 		return ""
 	}
@@ -71,7 +71,7 @@ func weather(command *bot.Cmd, matches []string) (msg string, err error) {
 	}
 
 	data := &Forecast{}
-	err = web.GetJSON(fmt.Sprintf(DarkSkyURL, bot.Config.API.Weather, coords), data)
+	err = web.GetJSON(fmt.Sprintf(DarkSkyURL, bot.Config.Weather, coords), data)
 	if err != nil {
 		return fmt.Sprintf("Could not get weather for: %s", location), nil
 	}

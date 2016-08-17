@@ -35,8 +35,7 @@ type Configure struct {
 type API struct {
 	Lastfm                string
 	Giphy                 string
-	TranslateClient       string
-	TranslateSecret       string
+	Translate             string
 	TwitterConsumerKey    string
 	TwitterConsumerSecret string
 	Weather               string
