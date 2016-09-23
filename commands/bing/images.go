@@ -41,7 +41,15 @@ func image(command *bot.Cmd, matches []string) (msg string, err error) {
 		return fmt.Sprintf("No results for %s", matches[1]), nil
 	}
 
-	output := fmt.Sprintf("Bing | %s | %s", matches[1], results.Value[0].ContentURL)
+	pageURL := results.Value[0].ContentURL
+
+	transport := http.Transport{}
+
+	request, _ = http.NewRequest("HEAD", pageURL, nil)
+	response, _ = transport.RoundTrip(request)
+	pageURL = response.Header.Get("Location")
+
+	output := fmt.Sprintf("Bing | %s | %s", matches[1], pageURL)
 	return output, nil
 }
 
