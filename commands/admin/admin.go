@@ -31,6 +31,14 @@ func setUnignore(command *bot.Cmd, matches []string) (msg string, err error) {
 	return "Sorry about that", nil
 }
 
+func unset(command *bot.Cmd, matches []string) (msg string, err error) {
+	if !bot.IsAdmin(command.Nick) || !bot.IsPrivateMsg(command.Channel, command.Nick) {
+		return
+	}
+	bot.DeleteUserKey(strings.TrimSpace(matches[1]), strings.TrimSpace(matches[2]))
+	return fmt.Sprintf("Deleted %s for %s", strings.TrimSpace(matches[2]), strings.TrimSpace(matches[1])), nil
+}
+
 func listChannels(command *bot.Cmd, matches []string) (msg string, err error) {
 	if !bot.IsAdmin(command.Nick) || !bot.IsPrivateMsg(command.Channel, command.Nick) {
 		return
@@ -58,6 +66,10 @@ func init() {
 	bot.RegisterCommand(
 		"^set unignore (\\S+)$",
 		setUnignore)
+
+	bot.RegisterCommand(
+		"^unset (\\S+) (\\S+)$",
+		unset)
 
 	bot.RegisterCommand(
 		"^list channels$",
