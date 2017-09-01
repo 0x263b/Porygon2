@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/0x263b/porygon2"
+	"github.com/0x263b/porygon2/web"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/dustin/go-humanize"
 	"github.com/kennygrant/sanitize"
+	"github.com/kurrik/oauth1a"
+	"github.com/kurrik/twittergo"
 	"html"
 	"io"
 	"io/ioutil"
@@ -18,6 +21,10 @@ import (
 	"strconv"
 	"strings"
 	"time"
+)
+
+const (
+	youtubeVideoURL = "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=%s&key=%s"
 )
 
 // 4chan API thread structure
@@ -40,6 +47,27 @@ type RedditComment []struct {
 			} `json:"data"`
 		} `json:"children"`
 	} `json:"data"`
+}
+
+// YouTube API
+type youtubeVideo struct {
+	Items []struct {
+		Snippet struct {
+			Title string `json:"title"`
+		} `json:"snippet"`
+		Contentdetails struct {
+			Duration string `json:"duration"`
+		} `json:"contentDetails"`
+	} `json:"items"`
+}
+
+func LoadCredentials() (client *twittergo.Client, err error) {
+	config := &oauth1a.ClientConfig{
+		ConsumerKey:    bot.Config.TwitterConsumerKey,
+		ConsumerSecret: bot.Config.TwitterConsumerSecret,
+	}
+	client = twittergo.NewClient(config, nil)
+	return
 }
 
 // Used to parse youtube's ISO 8601 durations
@@ -77,6 +105,51 @@ var timeout = time.Duration(3) * time.Second
 func dialTimeout(network, addr string) (net.Conn, error) {
 	conn, err := net.DialTimeout(network, addr, timeout)
 	return conn, err
+}
+
+func getTweet(arg string) string {
+	var (
+		err    error
+		client *twittergo.Client
+		req    *http.Request
+		resp   *twittergo.APIResponse
+		tweet  *twittergo.Tweet
+	)
+
+	client, err = LoadCredentials()
+	if err != nil {
+		fmt.Printf("Could not parse CREDENTIALS file: %v\n", err)
+	}
+	url := fmt.Sprintf("/1.1/statuses/show/%s.json?tweet_mode=extended", arg)
+	req, err = http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Printf("Could not parse request: %v\n", err)
+	}
+	resp, err = client.SendRequest(req)
+	if err != nil {
+		fmt.Printf("Could not send request: %v\n", err)
+	}
+	tweet = &twittergo.Tweet{}
+	err = resp.Parse(tweet)
+	if err != nil {
+		if rle, ok := err.(twittergo.RateLimitError); ok {
+			fmt.Printf("Rate limited, reset at %v\n", rle.Reset)
+		} else if errs, ok := err.(twittergo.Errors); ok {
+			for i, val := range errs.Errors() {
+				fmt.Printf("Error #%v - ", i+1)
+				fmt.Printf("Code: %v ", val.Code())
+				fmt.Printf("Msg: %v\n", val.Message())
+			}
+		} else {
+			fmt.Printf("Problem parsing response: %v\n", err)
+		}
+	}
+
+	reg := regexp.MustCompile("\\s+")
+	text := reg.ReplaceAllString(tweet.FullText(), " ") // Strip tabs and newlines
+	text = strings.TrimSpace(text)                      // Then trim excessive spaces
+
+	return fmt.Sprintf("%s (@%s): %s", tweet.User().Name(), tweet.User().ScreenName(), text)
 }
 
 func extractURL(text string) string {
@@ -132,11 +205,6 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	finalURL := response.Request.URL.Host
 
 	var bytes int64 = 40960
-	// Youtube's html buries the duration at the bottom
-	// so we have to read the first 100kB
-	if finalURL == "www.youtube.com" {
-		bytes = 102400
-	}
 
 	if response.Header.Get("Content-Type") == "" {
 		// Some servers don't give us anything to work with
@@ -168,19 +236,48 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	})
 
 	// Get tweet content from <meta>
-	if finalURL == "twitter.com" {
-		doc.Find("meta[property='og:description']").Each(func(i int, s *goquery.Selection) {
-			reg := regexp.MustCompile(`(^“|”\z)`)
-			tweet := reg.ReplaceAllString(s.AttrOr("content", title), "") // Strip quotes
-			title = fmt.Sprintf("%s: %s", title, tweet)
-		})
+	if finalURL == "twitter.com" || finalURL == "mobile.twitter.com" {
+		if response.StatusCode != 200 {
+			title = "404 Not Found"
+		} else {
+			r := regexp.MustCompile(`\/status\/(\d+)`)
+			status := r.FindStringSubmatch(response.Request.URL.Path)
+
+			if len(status) > 0 {
+				title = getTweet(status[1])
+			} else {
+				doc.Find("meta[property='og:description']").Each(func(i int, s *goquery.Selection) {
+					reg := regexp.MustCompile(`(^“|”\z)`)
+					tweet := reg.ReplaceAllString(s.AttrOr("content", title), "") // Strip quotes
+					title = fmt.Sprintf("%s: %s", title, tweet)
+				})
+			}
+		}
 	}
 
-	// Get video duration from <meta>
+	// Get YouTube title/duration
 	if finalURL == "www.youtube.com" {
-		doc.Find("meta[itemprop='duration']").Each(func(i int, s *goquery.Selection) {
-			title = fmt.Sprintf("%s | %s", title, ParseDuration(s.AttrOr("content", title)))
-		})
+		if response.StatusCode != 200 {
+			title = "404 Not Found"
+		} else {
+			r := regexp.MustCompile(`v=(\S{11})`)
+			id := r.FindStringSubmatch(response.Request.URL.RawQuery)
+
+			if len(id) > 0 {
+				video := &youtubeVideo{}
+				err = web.GetJSON(fmt.Sprintf(youtubeVideoURL, id[1], bot.Config.Youtube), video)
+				if err == nil {
+					if len(video.Items) == 0 {
+						title = "404 Not Found"
+					} else {
+						videoTitle := video.Items[0].Snippet.Title
+						duration := ParseDuration(video.Items[0].Contentdetails.Duration)
+
+						title = fmt.Sprintf("%s | %s", videoTitle, duration)
+					}
+				}
+			}
+		}
 	}
 
 	// Get 4chan post
