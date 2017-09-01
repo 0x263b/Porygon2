@@ -10,7 +10,7 @@ import (
 
 const (
 	GeocodeURL = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s"
-	DarkSkyURL = "https://api.forecast.io/forecast/%s/%s?units=auto&exclude=minutely,hourly,alerts"
+	DarkSkyURL = "https://api.darksky.net/forecast/%s/%s?units=auto&exclude=minutely,hourly,alerts"
 )
 
 func Emoji(icon string) string {
