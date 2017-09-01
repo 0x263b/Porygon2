@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"strings"
 	"sync"
+	"time"
 )
 
 // Cmd holds the parsed user's input for easier handling of commands
@@ -145,8 +147,16 @@ func handleCmd(c *Cmd, conn ircConnection) {
 		if matches := k.Cmd.FindStringSubmatch(c.Message); len(matches) > 0 {
 			message, err := k.CmdFunc(c, matches)
 			checkCmdError(err, c, conn)
-			if message != "" {
-				conn.Privmsg(c.Channel, message)
+
+			msg_arr := strings.Split(message, "\n")
+			for i, v := range msg_arr {
+				if v != "" {
+					// Flood Protection
+					if i > 0 {
+						time.Sleep(time.Millisecond * 800)
+					}
+					conn.Privmsg(c.Channel, v)
+				}
 			}
 		}
 	}
