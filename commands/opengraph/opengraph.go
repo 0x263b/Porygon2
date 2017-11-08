@@ -357,8 +357,8 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	title = reg.ReplaceAllString(title, " ") // Strip tabs and newlines
 	title = strings.TrimSpace(title)         // then trim excessive spaces
 
-	if len(title) > 200 {
-		title = fmt.Sprintf("%s …", title[0:200])
+	if len(title) > 400 {
+		title = fmt.Sprintf("%s …", title[0:400])
 	} else if len(title) < 1 {
 		title = "(no title)"
 	}
