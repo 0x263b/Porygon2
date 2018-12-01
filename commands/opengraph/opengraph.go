@@ -281,7 +281,7 @@ func openGraphTitle(command *bot.PassiveCmd) (string, error) {
 	}
 
 	// Get 4chan post
-	if finalURL == "boards.4chan.org" {
+	if finalURL == "boards.4chan.org" || finalURL == "boards.4channel.org" {
 		if strings.Contains(response.Request.URL.Path, "/thread/") {
 			path := strings.Split(response.Request.URL.Path, "/")
 			postId := response.Request.URL.Fragment
